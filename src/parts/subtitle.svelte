@@ -4,6 +4,7 @@
 
 const MAX_FRAMES = 60;
 
+import { subtitles } from "#scripts/stores";
 import type { Subtitle } from "#scripts/types";
 
 import Input from "#parts/input.svelte";
@@ -27,7 +28,7 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
 </script>
 
 
-<button>
+<div class="subtitle">
   <div class="timestamps">
     <div class="upper">
       <Input kind="number" placeholder="mm" style="width: 2em"
@@ -53,34 +54,64 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
   </div>
 
   <Input kind="text" bind:value={subtitle.body} style="width: 25em; height: 5em;" />
-</button>
+
+  <button class="delete" onclick={() => $subtitles.delete(subtitle)}>
+    ×
+  </button>
+</div>
 
 
 <style lang="scss">
 
-button {
+.subtitle {
   padding: 1em 2em;
   display: flex;
   flex-flow: row nowrap;
-  align-items: stretch;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 1rem;
 
   font-size: unset;
-  background: none;
   border: 1px solid transparent;
   border-radius: 1em;
   transition: all 0.1s ease-out;
 
-  &:hover, &:focus {
+  &:hover, &:focus-visible {
     box-shadow: 0 0 4px rgb(black, 20%);
   }
 }
 
 .timestamps {
+  align-self: start;
   display: flex;
   flex-flow: column nowrap;
   justify-content: start;
   gap: 0.5rem;
+}
+
+button.delete {
+  width: 2rem;
+  height: 2rem;
+  margin-left: 0.5rem;
+  color: rgb(black, 20%);
+  font-size: 150%;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.1s ease-out;
+
+  .subtitle:where(:hover, :focus-visible) & {
+    opacity: 1;
+  }
+
+  &:hover, &:focus-visible {
+    color: rgb(black, 50%);
+    background: rgb(black, 10%);
+  }
+
+  &:active {
+    background: rgb(black, 20%);
+  }
 }
 
 </style>

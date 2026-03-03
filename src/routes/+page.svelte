@@ -2,7 +2,7 @@
 
 import "#styles/essence.scss";
 
-import { data } from "#scripts/stores";
+import { subtitles } from "#scripts/stores";
 import { Timeframe } from "#scripts/types";
 
 import Subtitle    from "#parts/subtitle.svelte";
@@ -16,7 +16,7 @@ const DEFAULT_DURATION = new Timeframe(0, 3);
 
 <div class="root">
   <main>
-    {#each $data.subtitles as subtitle}
+    {#each $subtitles.subs as subtitle}
       <Subtitle bind:subtitle />
     {/each}
 
@@ -25,7 +25,7 @@ const DEFAULT_DURATION = new Timeframe(0, 3);
 
   <aside class="preview">
     <p class="lang">SRT</p>
-    <pre><code>{#key $data.subtitles}{$data.export_raw(DEFAULT_DURATION)}{/key}</code></pre>
+    <pre><code>{#key $subtitles.subs}{$subtitles.export_raw(DEFAULT_DURATION)}{/key}</code></pre>
   </aside>
 </div>
 

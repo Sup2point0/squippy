@@ -3,16 +3,30 @@ import { persisted } from "svelte-persisted-store";
 import { Timeframe, Subtitle } from "#scripts/types";
 
 
-export class SessionData
+export class SubtitlesData
 {
-  subtitles: Subtitle[] = [];
+  subs: Subtitle[] = [];
+
+  delete(subtitle: Subtitle): boolean
+  {
+    let idx = this.subs.indexOf(subtitle);
+
+    if (idx === -1) {
+      return false;
+    }
+    
+    this.subs.splice(idx, 1);
+    this.subs = this.subs;
+    
+    return true;
+  }
 
   export_raw(default_duration: Timeframe): string
   {
     let lines = [];
     let last_timestamp = new Timeframe();
 
-    for (let [i, sub] of this.subtitles.entries())
+    for (let [i, sub] of this.subs.entries())
     {
       let start: Timeframe = sub.start ?? last_timestamp;
       let end:   Timeframe = sub.calc_end_from(start, default_duration);
@@ -33,28 +47,28 @@ export class SessionData
   to_json(): string
   {
     let out = JSON.stringify({
-      subtitles: this.subtitles.map(sub => sub.to_json())
+      subtitles: this.subs.map(sub => sub.to_json())
     });
 
     return out;
   }
 
-  static from_json(json: string): SessionData
+  static from_json(json: string): SubtitlesData
   {
     let data = JSON.parse(json);
 
-    let out = new SessionData();
-    out.subtitles = data.subtitles?.map(sub => Subtitle.from_json(sub)) ?? out.subtitles;
+    let out = new SubtitlesData();
+    out.subs = data.subtitles?.map(sub => Subtitle.from_json(sub)) ?? out.subs;
 
     return out;
   }
 }
 
 
-export const data = persisted("sub2.0-session-data", new SessionData(), {
+export const subtitles = persisted("sub2.0-session-data", new SubtitlesData(), {
   syncTabs: true,
   serializer: {
-    parse:     (json: string)      => SessionData.from_json(json),
-    stringify: (data: SessionData) => data.to_json(),
+    parse:     (json: string)      => SubtitlesData.from_json(json),
+    stringify: (data: SubtitlesData) => data.to_json(),
   },
 });

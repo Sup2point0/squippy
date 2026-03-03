@@ -4,14 +4,14 @@
 
 <script lang="ts">
 
-import { data } from "#scripts/stores";
+import { subtitles } from "#scripts/stores";
 import { Subtitle } from "#scripts/types";
 
 
 function add_subtitle()
 {
-  $data.subtitles.push(new Subtitle());
-  $data.subtitles = $data.subtitles;
+  $subtitles.subs.push(new Subtitle());
+  $subtitles.subs = $subtitles.subs;
 }
 
 </script>
