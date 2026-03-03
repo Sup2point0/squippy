@@ -1,25 +1,33 @@
 import { persisted } from "svelte-persisted-store";
 
-import { Timestamp, Subtitle } from "#scripts/types";
+import { Timeframe, Subtitle } from "#scripts/types";
 
 
 export class SessionData
 {
   subtitles: Subtitle[] = [];
 
-  export_raw(): string
+  export_raw(default_duration: Timeframe): string
   {
-    return (
-      this.subtitles
-        .entries()
-        .map(([i, sub]) => {
-          let j    = i + 1;
-          let line = sub.export_raw();
-          return `${j}\n${line}`;
-        })
-        .toArray()
-        .join("\n\n")
-    );
+    let lines = [];
+    let last_timestamp = new Timeframe();
+
+    for (let [i, sub] of this.subtitles.entries())
+    {
+      let start: Timeframe = sub.start ?? last_timestamp;
+      let end:   Timeframe = sub.calc_end_from(start, default_duration);
+
+      let frags = [
+        `${i+1}`,
+        `${start.display()} --> ${end.display()}`,
+        sub.body,
+      ];
+
+      lines.push(frags.join("\n"));
+      last_timestamp = end;
+    }
+
+    return lines.join("\n\n");
   }
 
   to_json(): string
@@ -28,16 +36,13 @@ export class SessionData
       subtitles: this.subtitles.map(sub => sub.to_json())
     });
 
-    console.log("to_json =", out);
-
     return out;
   }
 
   static from_json(json: string): SessionData
   {
     let data = JSON.parse(json);
-    console.log("data =", data);
-    
+
     let out = new SessionData();
     out.subtitles = data.subtitles?.map(sub => Subtitle.from_json(sub)) ?? out.subtitles;
 

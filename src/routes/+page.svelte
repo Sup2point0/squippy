@@ -3,8 +3,13 @@
 import "#styles/essence.scss";
 
 import { data } from "#scripts/stores";
+import { Timeframe } from "#scripts/types";
 
-import Subtitle from "#parts/subtitle.svelte";
+import Subtitle    from "#parts/subtitle.svelte";
+import AddSubtitle from "#parts/add-subtitle.svelte";
+
+
+const DEFAULT_DURATION = new Timeframe(0, 3);
 
 </script>
 
@@ -14,11 +19,13 @@ import Subtitle from "#parts/subtitle.svelte";
     {#each $data.subtitles as subtitle}
       <Subtitle bind:subtitle />
     {/each}
+
+    <AddSubtitle />
   </main>
 
   <aside class="preview">
     <p class="lang">SRT</p>
-    <pre><code>{#key $data.subtitles}{$data.export_raw()}{/key}</code></pre>
+    <pre><code>{#key $data.subtitles}{$data.export_raw(DEFAULT_DURATION)}{/key}</code></pre>
   </aside>
 </div>
 
@@ -42,6 +49,7 @@ main {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+  overflow-y: auto;
 }
 
 .preview {

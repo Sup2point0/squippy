@@ -1,7 +1,7 @@
 import type { Int } from "#scripts/types";
 
 
-export class Timestamp
+export class Timeframe
 {
   mins:   Int;
   secs:   Int;
@@ -14,16 +14,16 @@ export class Timestamp
     this.frames = frames ?? 0;
   }
 
-  shifted(duration: Timestamp): Timestamp
+  shifted(duration: Timeframe): Timeframe
   {
-    return new Timestamp(
+    return new Timeframe(
       this.mins + (duration.mins ?? 0),
       this.secs + (duration.secs ?? 0),
       this.frames + (duration.frames ?? 0),
     );
   }
 
-  raw(): string
+  display(): string
   {
     let m = this.mins.toString().padStart(2, "0");
     let s = this.secs.toString().padStart(2, "0");
@@ -41,8 +41,8 @@ export class Timestamp
     };
   }
 
-  static from_json(data?: Record<string, number>): Timestamp
+  static from_json(data?: Record<string, number>): Timeframe | null
   {
-    return new Timestamp(data?.mins, data?.secs, data?.frames);
+    return data ? new Timeframe(data.mins, data.secs, data.frames) : null;
   }
 }
