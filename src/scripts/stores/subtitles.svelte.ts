@@ -5,7 +5,28 @@ import { Timeframe, Subtitle } from "#scripts/types";
 
 export class SubtitlesData
 {
-  subs: Subtitle[] = [];
+  subs: Subtitle[] = $state([]);
+
+  /** Change the ordering of one subtitle to be either 1 position or 1 position later. */
+  reorder_in(subtitle: Subtitle, direction: "up" | "down"): boolean
+  {
+    let idx = this.subs.indexOf(subtitle);
+    if (idx === -1) return false;
+
+    switch (direction) {
+      case "up":
+        if (idx === 0) return false;
+        [this.subs[idx-1], this.subs[idx]] = [this.subs[idx], this.subs[idx-1]];
+        break;
+
+      case "down":
+        if (idx === (this.subs.length - 1)) return false;
+        [this.subs[idx], this.subs[idx+1]] = [this.subs[idx+1], this.subs[idx]];
+        break;
+    }
+
+    return true;
+  }
 
   delete(subtitle: Subtitle): boolean
   {
@@ -16,8 +37,7 @@ export class SubtitlesData
     }
     
     this.subs.splice(idx, 1);
-    this.subs = this.subs;
-    
+
     return true;
   }
 

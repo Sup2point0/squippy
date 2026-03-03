@@ -31,6 +31,7 @@ const config = {
     sveltePreprocess({
       scss: {
         prependData: `
+          @use 'src/styles/mixins/constants' as *;
           @use 'src/styles/mixins/colours' as *;
           @use 'src/styles/mixins/fonts' as *;
         `,

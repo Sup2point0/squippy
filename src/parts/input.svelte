@@ -50,7 +50,7 @@ input {
 
   &:hover, &:focus {
     border-color: $col-prot;
-    outline-color: color.change($col-prot, $alpha: 0.4);
+    outline-color: color.change($col-prot, $alpha: 0.2);
   }
 
   &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {

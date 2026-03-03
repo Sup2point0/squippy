@@ -53,11 +53,13 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
     </div>
   </div>
 
-  <Input kind="text" bind:value={subtitle.body} style="width: 25em; height: 5em;" />
+  <Input kind="text" bind:value={subtitle.body} style="width: 20em; height: 5em;" />
 
-  <button class="delete" onclick={() => $subtitles.delete(subtitle)}>
-    ×
-  </button>
+  <div class="actions">
+    <button onclick={() => $subtitles.reorder_in(subtitle, "up")}> ↑ </button>
+    <button onclick={() => $subtitles.delete(subtitle)}> × </button>
+    <button onclick={() => $subtitles.reorder_in(subtitle, "down")}> ↓ </button>
+  </div>
 </div>
 
 
@@ -67,7 +69,7 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
   padding: 1em 2em;
   display: flex;
   flex-flow: row nowrap;
-  align-items: center;
+  align-items: stretch;
   gap: 1rem;
 
   font-size: unset;
@@ -86,12 +88,27 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
   flex-flow: column nowrap;
   justify-content: start;
   gap: 0.5rem;
+
+  > div {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 0.5rem;
+  }
 }
 
-button.delete {
+.actions {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.actions button {
   width: 2rem;
   height: 2rem;
   margin-left: 0.5rem;
+
+  @include font-code;
   color: rgb(black, 20%);
   font-size: 150%;
   background: none;

@@ -11,7 +11,6 @@ import { Subtitle } from "#scripts/types";
 function add_subtitle()
 {
   $subtitles.subs.push(new Subtitle());
-  $subtitles.subs = $subtitles.subs;
 }
 
 </script>
@@ -27,14 +26,14 @@ function add_subtitle()
 <style lang="scss">
 
 button {
-  padding: 2rem 5rem;
+  padding: 1rem 2rem;
   @include font-code;
   font-size: 200%;
   background: none;
-  border: none;
+  border: 1px solid transparent;
 
   &:hover, &:focus {
-    background: rgb(black, 2%);
+    border-color: $col-prot;
   }
 }
 
