@@ -20,12 +20,12 @@ interface Props {
 let { index, subtitle = $bindable() }: Props = $props();
 
 
-function get_start(part: "mins" | "secs" | "frames"): () => number | undefined {
-  return () => subtitle.start?.[part];
+function get_start(part: "mins" | "secs" | "frames"): () => number | null {
+  return () => subtitle.start?.[part] ?? null;
 }
 
-function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
-  return () => subtitle.end?.[part];
+function get_end(part: "mins" | "secs" | "frames"): () => number | null {
+  return () => subtitle.end?.[part] ?? null;
 }
 
 </script>
@@ -34,24 +34,24 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
 <div class="subtitle" transition:slide={{ duration: 300, easing: expoOut }}>
   <div class="timestamps">
     <div class="upper">
-      <Input kind="number" placeholder="mm" style="width: 2em"
+      <Input placeholder="mm"
         bind:value={get_start("mins"),   m => subtitle.set_start({ mins: m })} />
 
-      <Input kind="number" placeholder="ss" style="width: 2em"
+      <Input placeholder="ss"
         bind:value={get_start("secs"),   s => subtitle.set_start({ secs: s })} />
 
-      <Input kind="number" placeholder="ff" style="width: 2em" max={$prefs.framerate}
+      <Input placeholder="ff" max={$prefs.framerate}
         bind:value={get_start("frames"), f => subtitle.set_start({ frames: f })} />
     </div>
 
     <div class="lower">
-      <Input kind="number" placeholder="mm" style="width: 2em"
+      <Input placeholder="mm"
         bind:value={get_end("mins"),   m => subtitle.set_end({ mins: m })} />
 
-      <Input kind="number" placeholder="ss" style="width: 2em"
+      <Input placeholder="ss"
         bind:value={get_end("secs"),   s => subtitle.set_end({ secs: s })} />
 
-      <Input kind="number" placeholder="ff" style="width: 2em" max={$prefs.framerate}
+      <Input placeholder="ff" max={$prefs.framerate}
         bind:value={get_end("frames"), f => subtitle.set_end({ frames: f })} />
     </div>
   </div>

@@ -1,11 +1,11 @@
-import { Timeframe } from "#scripts/types";
+import { Timeframe, type Int } from "#scripts/types";
 
 
 export class Subtitle
 {
   static id_count = 0;
 
-  id: number;
+  id: Int;
 
   /** The starting timestamp of the subtitle. If none provided, it will be auto-calculated relative to the end of the previous subtitle, using global defaults. */
   start: Timeframe | null = $state(null);
@@ -37,41 +37,60 @@ export class Subtitle
   }
 
 
-  /** Alter the starting timestamp of this subtitle, initialising it if it was previously unset. */
-  set_start(data: { mins?: number, secs?: number, frames?: number })
+  /** Alter the starting timestamp of this subtitle, initialising it if it was previously unset, or uninitialising it if all components have been cleared. */
+  set_start(data: {
+    mins?: number | null,
+    secs?: number | null,
+    frames?: number | null,
+  })
   {
-    if (data.mins == undefined && data.secs == undefined && data.frames == undefined) {
-      this.start = null;
-    }
-    else if (this.start === null) {
+    if (this.start == null) {
       this.start = new Timeframe(data.mins, data.secs, data.frames);
     }
     else {
-      if (data.mins) this.start.mins = data.mins;
-      if (data.secs) this.start.secs = data.secs;
-      if (data.frames) this.start.frames = data.frames;
+      if (data.mins !== undefined) this.start.mins = data.mins;
+      if (data.secs !== undefined) this.start.secs = data.secs;
+      if (data.frames !== undefined) this.start.frames = data.frames;
+    }
+    
+    if (
+        this.start.mins == null
+      && this.start.secs == null
+      && this.start.frames == null
+    ) {
+      this.start = null;
     }
   }
 
-  /** Alter the ending timestamp of this subtitle, initialising it if it was previously unset. */
-  set_end(data: { mins?: number, secs?: number, frames?: number })
+  /** Alter the ending timestamp of this subtitle, initialising it if it was previously unset, or uninitialising it if all components have been cleared. */
+  set_end(data: {
+    mins?: number | null,
+    secs?: number | null,
+    frames?: number | null,
+  })
   {
-    if (data.mins == undefined && data.secs == undefined && data.frames == undefined) {
-      this.end = null;
-    }
-    else if (this.end === null) {
+    if (this.end == null) {
       this.end = new Timeframe(data.mins, data.secs, data.frames);
     }
     else {
-      if (data.mins) this.end.mins = data.mins;
-      if (data.secs) this.end.secs = data.secs;
-      if (data.frames) this.end.frames = data.frames;
+      if (data.mins !== undefined) this.end.mins = data.mins;
+      if (data.secs !== undefined) this.end.secs = data.secs;
+      if (data.frames !== undefined) this.end.frames = data.frames;
+    }
+    
+    if (
+        this.end.mins == null
+      && this.end.secs == null
+      && this.end.frames == null
+    ) {
+      this.end = null;
     }
   }
 
-  calc_end_from(start: Timeframe, default_duration: Timeframe): Timeframe
+  /** Get the specified ending timestamp of this subtitle if set. Otherwise calculate it from `start`, using the duration of this subtitle if set, otherwise using `default_duration`. */
+  end_or_from(start: Timeframe, default_duration: Timeframe): Timeframe
   {
-    return start.shifted(this.duration ?? default_duration);
+    return this.end?.check() ?? start.shifted(this.duration?.check() ?? default_duration);
   }
 
 

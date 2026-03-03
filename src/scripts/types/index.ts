@@ -1,3 +1,3 @@
 export * from "./root";
-export * from "./timestamp";
+export * from "./timeframe.ts";
 export * from "./subtitle.svelte.ts";

@@ -6,14 +6,12 @@ interface Props {
   value: any;
   placeholder?: string;
   max?: number;
-  style: string;
 }
 
 let {
   value = $bindable(),
   placeholder = "",
-  max = 60,
-  style,
+  max,
 }: Props = $props();
 
 </script>
@@ -23,7 +21,6 @@ let {
   type="number"
   bind:value
   {placeholder}
-  {style}
   min={0}
   {max}
 />
@@ -35,7 +32,7 @@ let {
 
 
 input {
-  min-width: max-content;
+  width: 2.5em;
   padding: 0.25em 0.5em;
   @include font-ui;
   font-size: 120%;
@@ -44,6 +41,11 @@ input {
   border: 1px solid #ddd;
   border-radius: $border-radius;
   transition: all 0.1s ease-out;
+
+  &::placeholder {
+    color: rgb(black, 25%);
+    font-size: 80%;
+  }
 
   &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
     display: none;
