@@ -5,7 +5,8 @@
 import { subtitles, prefs } from "#scripts/stores";
 import type { Subtitle } from "#scripts/types";
 
-import Input from "#parts/input.svelte";
+import Input    from "#parts/input.svelte";
+import Textarea from "#parts/textarea.svelte";
 
 import { slide } from "svelte/transition";
 import { expoOut } from "svelte/easing";
@@ -55,7 +56,7 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
     </div>
   </div>
 
-  <Input kind="text" bind:value={subtitle.body} style="width: 20em; height: 5em;" />
+  <Textarea bind:value={subtitle.body} />
 
   <div class="actions">
     <button onclick={() => $subtitles.reorder_in(subtitle, "up")} disabled={index === 0}> ↑ </button>

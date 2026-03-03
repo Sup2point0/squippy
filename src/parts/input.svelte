@@ -3,7 +3,6 @@
 <script lang="ts">
 
 interface Props {
-  kind?: "text" | "number";
   value: any;
   placeholder?: string;
   max?: number;
@@ -11,24 +10,22 @@ interface Props {
 }
 
 let {
-  kind = "text",
   value = $bindable(),
   placeholder = "",
-  max: MAX_FRAMES = 60,
+  max = 60,
   style,
 }: Props = $props();
 
 </script>
 
 
-<input 
-  class={kind}
-  type={kind}
+<input
+  type="number"
   bind:value
   {placeholder}
   {style}
-  min={kind === "number" ? 0 : undefined}
-  max={kind === "number" ? MAX_FRAMES : undefined}
+  min={0}
+  {max}
 />
 
 
@@ -45,11 +42,17 @@ input {
   background: none;
   @include interactive;
   border: 1px solid #ddd;
-  border-radius: 0.5em;
+  border-radius: $border-radius;
   transition: all 0.1s ease-out;
 
   &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
     display: none;
+  }
+
+  &:invalid {
+    color: $col-prot;
+    background: color.change($col-prot, $alpha: 0.08);
+    border-color: $col-prot;
   }
 }
 
