@@ -43,15 +43,10 @@ input {
   @include font-ui;
   font-size: 120%;
   background: none;
+  @include interactive;
   border: 1px solid #ddd;
   border-radius: 0.5em;
-  outline: 3px solid transparent;
   transition: all 0.1s ease-out;
-
-  &:hover, &:focus {
-    border-color: $col-prot;
-    outline-color: color.change($col-prot, $alpha: 0.2);
-  }
 
   &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
     display: none;

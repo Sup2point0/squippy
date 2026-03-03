@@ -7,6 +7,11 @@ export class SubtitlesData
 {
   subs: Subtitle[] = $state([]);
 
+  react()
+  {
+    subtitles.update(v => v);
+  }
+
   /** Change the ordering of one subtitle to be either 1 position or 1 position later. */
   reorder_in(subtitle: Subtitle, direction: "up" | "down"): boolean
   {
@@ -25,6 +30,8 @@ export class SubtitlesData
         break;
     }
 
+    this.react();
+
     return true;
   }
 
@@ -37,6 +44,7 @@ export class SubtitlesData
     }
     
     this.subs.splice(idx, 1);
+    this.react();
 
     return true;
   }

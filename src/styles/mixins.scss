@@ -1,0 +1,14 @@
+@use 'sass:color';
+
+@use './colours' as *;
+
+
+@mixin interactive {
+  border: 1px solid transparent;
+  outline: 3px solid transparent;
+
+  &:hover, &:focus-visible {
+    border-color: $col-prot;
+    outline-color: color.change($col-prot, $alpha: 0.2);
+  }
+}

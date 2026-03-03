@@ -9,12 +9,16 @@ import type { Subtitle } from "#scripts/types";
 
 import Input from "#parts/input.svelte";
 
+import { slide } from "svelte/transition";
+import { expoOut } from "svelte/easing";
+
 
 interface Props {
+  index: number;
   subtitle: Subtitle;
 }
 
-let { subtitle = $bindable() }: Props = $props();
+let { index, subtitle = $bindable() }: Props = $props();
 
 
 function get_start(part: "mins" | "secs" | "frames"): () => number | undefined {
@@ -28,7 +32,7 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
 </script>
 
 
-<div class="subtitle">
+<div class="subtitle" transition:slide={{ duration: 300, easing: expoOut }}>
   <div class="timestamps">
     <div class="upper">
       <Input kind="number" placeholder="mm" style="width: 2em"
@@ -56,9 +60,9 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
   <Input kind="text" bind:value={subtitle.body} style="width: 20em; height: 5em;" />
 
   <div class="actions">
-    <button onclick={() => $subtitles.reorder_in(subtitle, "up")}> ↑ </button>
+    <button onclick={() => $subtitles.reorder_in(subtitle, "up")} disabled={index === 0}> ↑ </button>
     <button onclick={() => $subtitles.delete(subtitle)}> × </button>
-    <button onclick={() => $subtitles.reorder_in(subtitle, "down")}> ↓ </button>
+    <button onclick={() => $subtitles.reorder_in(subtitle, "down")} disabled={index === $subtitles.subs.length - 1}> ↓ </button>
   </div>
 </div>
 
@@ -100,12 +104,11 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  gap: 0.5rem;
 }
 
 .actions button {
-  width: 2rem;
-  height: 2rem;
+  width: 2.1rem;
+  height: 2.1rem;
   margin-left: 0.5rem;
 
   @include font-code;
@@ -118,10 +121,15 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
   transition: all 0.1s ease-out;
 
   .subtitle:where(:hover, :focus-visible) & {
-    opacity: 1;
+    opacity: 100%;
+  }
+  .subtitle:where(:hover, :focus-visible) &[disabled] {
+    pointer-events: none;
+    opacity: 20%;
   }
 
   &:hover, &:focus-visible {
+    cursor: pointer;
     color: rgb(black, 50%);
     background: rgb(black, 10%);
   }

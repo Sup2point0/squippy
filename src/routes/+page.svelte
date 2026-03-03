@@ -9,6 +9,9 @@ import Subtitle    from "#parts/subtitle.svelte";
 import AddSubtitle from "#parts/add-subtitle.svelte";
 import Clicky      from "#parts/clicky.svelte";
 
+import { flip } from "svelte/animate";
+import { expoOut } from "svelte/easing";
+
 
 const DEFAULT_DURATION = new Timeframe(0, 3);
 
@@ -31,8 +34,10 @@ function export_srt()
 
 <div class="root">
   <main>
-    {#each $subtitles.subs as _, i}
-      <Subtitle bind:subtitle={$subtitles.subs[i]} />
+    {#each $subtitles.subs as sub, index (sub.id)}
+      <div animate:flip={{ duration: 500, easing: expoOut }}>
+        <Subtitle {index} bind:subtitle={$subtitles.subs[index]} />
+      </div>
     {/each}
 
     <AddSubtitle />
@@ -85,7 +90,7 @@ main {
   flex-grow: 1;
   min-width: 40vw;
   position: relative;
-  background: rgb(black, 4%);
+  background: rgb(black, 3%);
 
   p.lang {
     position: absolute;

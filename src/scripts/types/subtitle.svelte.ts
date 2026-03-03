@@ -3,6 +3,10 @@ import { Timeframe } from "#scripts/types";
 
 export class Subtitle
 {
+  static id_count = 0;
+
+  id: number;
+
   /** The starting timestamp of the subtitle. If none provided, it will be auto-calculated relative to the end of the previous subtitle, using global defaults. */
   start: Timeframe | null = $state(null);
 
@@ -23,6 +27,9 @@ export class Subtitle
     body:      string,
   })
   {
+    Subtitle.id_count++;
+    this.id = Subtitle.id_count;
+
     this.start    = data?.start    ?? null;
     this.duration = data?.duration ?? null;
     this.end      = data?.end      ?? null;
