@@ -33,7 +33,10 @@ export class Subtitle
   /** Alter the starting timestamp of this subtitle, initialising it if it was previously unset. */
   set_start(data: { mins?: number, secs?: number, frames?: number })
   {
-    if (this.start === null) {
+    if (data.mins === undefined && data.secs === undefined && data.frames === undefined) {
+      this.start = null;
+    }
+    else if (this.start === null) {
       this.start = new Timeframe(data.mins, data.secs, data.frames);
     }
     else {
@@ -46,7 +49,10 @@ export class Subtitle
   /** Alter the ending timestamp of this subtitle, initialising it if it was previously unset. */
   set_end(data: { mins?: number, secs?: number, frames?: number })
   {
-    if (this.end === null) {
+    if (data.mins === undefined && data.secs === undefined && data.frames === undefined) {
+      this.end = null;
+    }
+    else if (this.end === null) {
       this.end = new Timeframe(data.mins, data.secs, data.frames);
     }
     else {

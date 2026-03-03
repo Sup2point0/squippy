@@ -2,6 +2,8 @@
 
 <script lang="ts">
 
+const MAX_FRAMES = 60;
+
 import type { Subtitle } from "#scripts/types";
 
 import Input from "#parts/input.svelte";
@@ -13,6 +15,15 @@ interface Props {
 
 let { subtitle = $bindable() }: Props = $props();
 
+
+function get_start(part: "mins" | "secs" | "frames"): () => number | undefined {
+  return () => subtitle.start?.[part];
+}
+
+function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
+  return () => subtitle.end?.[part];
+}
+
 </script>
 
 
@@ -20,24 +31,24 @@ let { subtitle = $bindable() }: Props = $props();
   <div class="timestamps">
     <div class="upper">
       <Input kind="number" placeholder="mm" style="width: 2em"
-        bind:value={() => subtitle.start?.mins,   m => subtitle.set_start({ mins: m })} />
+        bind:value={get_start("mins"),   m => subtitle.set_start({ mins: m })} />
 
       <Input kind="number" placeholder="ss" style="width: 2em"
-        bind:value={() => subtitle.start?.secs,   s => subtitle.set_start({ secs: s })} />
+        bind:value={get_start("secs"),   s => subtitle.set_start({ secs: s })} />
 
-      <Input kind="number" placeholder="ff" style="width: 2em"
-        bind:value={() => subtitle.start?.frames, f => subtitle.set_start({ frames: f })} />
+      <Input kind="number" placeholder="ff" style="width: 2em" max={MAX_FRAMES}
+        bind:value={get_start("frames"), f => subtitle.set_start({ frames: f })} />
     </div>
 
     <div class="lower">
       <Input kind="number" placeholder="mm" style="width: 2em"
-        bind:value={() => subtitle.end?.mins,   m => subtitle.set_end({ mins: m })} />
+        bind:value={get_end("mins"),   m => subtitle.set_end({ mins: m })} />
 
       <Input kind="number" placeholder="ss" style="width: 2em"
-        bind:value={() => subtitle.end?.secs,   s => subtitle.set_end({ secs: s })} />
+        bind:value={get_end("secs"),   s => subtitle.set_end({ secs: s })} />
 
-      <Input kind="number" placeholder="ff" style="width: 2em"
-        bind:value={() => subtitle.end?.frames, f => subtitle.set_end({ frames: f })} />
+      <Input kind="number" placeholder="ff" style="width: 2em" max={MAX_FRAMES}
+        bind:value={get_end("frames"), f => subtitle.set_end({ frames: f })} />
     </div>
   </div>
 

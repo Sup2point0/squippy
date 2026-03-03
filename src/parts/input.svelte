@@ -6,6 +6,7 @@ interface Props {
   kind?: "text" | "number";
   value: any;
   placeholder?: string;
+  max?: number;
   style: string;
 }
 
@@ -13,16 +14,21 @@ let {
   kind = "text",
   value = $bindable(),
   placeholder = "",
+  max: MAX_FRAMES = 60,
   style,
 }: Props = $props();
 
 </script>
 
 
-<input type={kind}
+<input 
+  class={kind}
+  type={kind}
   bind:value
   {placeholder}
   {style}
+  min={kind === "number" ? 0 : undefined}
+  max={kind === "number" ? MAX_FRAMES : undefined}
 />
 
 
@@ -32,6 +38,7 @@ let {
 
 
 input {
+  min-width: max-content;
   padding: 0.25em 0.5em;
   @include font-ui;
   font-size: 120%;
