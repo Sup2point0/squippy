@@ -17,8 +17,8 @@ let { subtitle = $bindable() }: Props = $props();
 
 
 <button>
-  <Input kind="number" bind:value={subtitle.start} />
-  <Input bind:value={subtitle.body} />
+  <Input kind="number" value={subtitle.start} style="width: 4em" />
+  <Input bind:value={subtitle.body} style="width: 20em; height: 5em;" />
 </button>
 
 

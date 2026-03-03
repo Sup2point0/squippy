@@ -14,6 +14,15 @@ export class Timestamp
     this.frames = frames ?? 0;
   }
 
+  shifted(duration: Timestamp): Timestamp
+  {
+    return new Timestamp(
+      this.mins + (duration.mins ?? 0),
+      this.secs + (duration.secs ?? 0),
+      this.frames + (duration.frames ?? 0),
+    );
+  }
+
   raw(): string
   {
     let m = this.mins.toString().padStart(2, "0");
@@ -21,5 +30,19 @@ export class Timestamp
     let f = this.frames.toString().padStart(2, "0");
 
     return [m, s, f].join(":")
+  }
+
+  to_json(): object
+  {
+    return {
+      mins: this.mins,
+      secs: this.secs,
+      frames: this.frames,
+    };
+  }
+
+  static from_json(data?: Record<string, number>): Timestamp
+  {
+    return new Timestamp(data?.mins, data?.secs, data?.frames);
   }
 }

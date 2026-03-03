@@ -6,12 +6,14 @@ interface Props {
   kind?: "text" | "number";
   value: any;
   placeholder?: string;
+  style: string;
 }
 
 let {
   kind = "text",
   value = $bindable(),
   placeholder = "",
+  style,
 }: Props = $props();
 
 </script>
@@ -20,6 +22,7 @@ let {
 <input type={kind}
   bind:value
   {placeholder}
+  {style}
 />
 
 
