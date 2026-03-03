@@ -19,7 +19,6 @@
     "@sveltejs/adapter-static": "^3.0",
     "@sveltejs/kit": "^2.48",
     "@sveltejs/vite-plugin-svelte": "^6.2",
-    "mdsvex": "^0.12.6",
     "sass": "^1.77.6",
     "svelte": "^5.0",
     "svelte-persisted-store": "^0.8.1",

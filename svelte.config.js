@@ -1,8 +1,6 @@
 import adapter from "@sveltejs/adapter-static";
 import { sveltePreprocess } from "svelte-preprocess";
 
-import { mdsvex } from "mdsvex";
-
 
 const config = {
   extensions: [".svelte", ".md", ".svx"],
@@ -30,12 +28,11 @@ const config = {
   },
 
   preprocess: [
-    mdsvex({
-      extensions: [".md", ".svx"],
-    }),
     sveltePreprocess({
       scss: {
-        prependData: ``,
+        prependData: `
+          @use 'src/styles/mixins/fonts' as *;
+        `,
       }
     }),
   ],
