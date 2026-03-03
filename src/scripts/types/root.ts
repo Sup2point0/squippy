@@ -1,1 +1,1 @@
-export type Duration = number;
+export type Int = number;

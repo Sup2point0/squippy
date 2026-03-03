@@ -1,3 +1,7 @@
 @mixin font-ui {
   font-family: 'Alegreya Sans', 'Segoe UI', system-ui, sans-serif;
 }
+
+@mixin font-code {
+  font-family: 'Fira Mono', 'SF Mono', 'Consolas', monospace;
+}

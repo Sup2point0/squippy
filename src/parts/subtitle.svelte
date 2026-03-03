@@ -26,6 +26,7 @@ let { subtitle = $bindable() }: Props = $props();
 
 button {
   padding: 1em 2em;
+  font-size: unset;
   background: none;
   border: 1px solid transparent;
   border-radius: 1em;

@@ -28,6 +28,7 @@ let {
 input {
   padding: 0.5em 1em;
   @include font-ui;
+  font-size: unset;
   background: none;
   border: 1px solid #ddd;
   border-radius: 0.5em;
