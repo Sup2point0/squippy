@@ -2,8 +2,7 @@
 
 import "#styles/essence.scss";
 
-import { subtitles } from "#scripts/stores";
-import { Timeframe } from "#scripts/types";
+import { subtitles, prefs } from "#scripts/stores";
 
 import Subtitle    from "#parts/subtitle.svelte";
 import AddSubtitle from "#parts/add-subtitle.svelte";
@@ -13,9 +12,7 @@ import { flip } from "svelte/animate";
 import { expoOut } from "svelte/easing";
 
 
-const DEFAULT_DURATION = new Timeframe(0, 3);
-
-let exported = $derived($subtitles.export_raw(DEFAULT_DURATION));
+let exported = $derived($subtitles.export_raw($prefs.default_duration));
 
 
 function export_srt()

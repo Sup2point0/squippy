@@ -2,9 +2,7 @@
 
 <script lang="ts">
 
-const MAX_FRAMES = 60;
-
-import { subtitles } from "#scripts/stores";
+import { subtitles, prefs } from "#scripts/stores";
 import type { Subtitle } from "#scripts/types";
 
 import Input from "#parts/input.svelte";
@@ -41,7 +39,7 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
       <Input kind="number" placeholder="ss" style="width: 2em"
         bind:value={get_start("secs"),   s => subtitle.set_start({ secs: s })} />
 
-      <Input kind="number" placeholder="ff" style="width: 2em" max={MAX_FRAMES}
+      <Input kind="number" placeholder="ff" style="width: 2em" max={$prefs.framerate}
         bind:value={get_start("frames"), f => subtitle.set_start({ frames: f })} />
     </div>
 
@@ -52,7 +50,7 @@ function get_end(part: "mins" | "secs" | "frames"): () => number | undefined {
       <Input kind="number" placeholder="ss" style="width: 2em"
         bind:value={get_end("secs"),   s => subtitle.set_end({ secs: s })} />
 
-      <Input kind="number" placeholder="ff" style="width: 2em" max={MAX_FRAMES}
+      <Input kind="number" placeholder="ff" style="width: 2em" max={$prefs.framerate}
         bind:value={get_end("frames"), f => subtitle.set_end({ frames: f })} />
     </div>
   </div>

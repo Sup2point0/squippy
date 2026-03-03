@@ -35,6 +35,7 @@ export class SubtitlesData
     return true;
   }
 
+  /** Delete the given `subtitle`. */
   delete(subtitle: Subtitle): boolean
   {
     let idx = this.subs.indexOf(subtitle);
@@ -49,6 +50,7 @@ export class SubtitlesData
     return true;
   }
 
+  /** Export the subtitles to SRT format. */
   export_raw(default_duration: Timeframe): string
   {
     let lines = [];
@@ -72,13 +74,12 @@ export class SubtitlesData
     return lines.join("\n\n");
   }
 
+
   to_json(): string
   {
-    let out = JSON.stringify({
+    return JSON.stringify({
       subtitles: this.subs.map(sub => sub.to_json())
     });
-
-    return out;
   }
 
   static from_json(json: string): SubtitlesData
@@ -93,7 +94,8 @@ export class SubtitlesData
 }
 
 
-export const subtitles = persisted("sub2.0-session-data", new SubtitlesData(), {
+/** The global subtitles store. */
+export const subtitles = persisted("squippy.subs", new SubtitlesData(), {
   syncTabs: true,
   serializer: {
     parse:     (json: string)      => SubtitlesData.from_json(json),

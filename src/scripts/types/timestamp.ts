@@ -1,11 +1,13 @@
 import type { Int } from "#scripts/types";
 
 
+/** A measure of time in a subtitling context, consisting of minute, second and frame markers. Can be used as both a single timestamp or duration to be used with other `Timeframe`s. */
 export class Timeframe
 {
   mins:   Int;
   secs:   Int;
   frames: Int;
+
 
   constructor(mins?: Int, secs?: Int, frames?: Int)
   {
@@ -14,6 +16,7 @@ export class Timeframe
     this.frames = frames ?? 0;
   }
 
+  /** (out-of-place) Return this timeframe shifted by `duration` as a new `Timeframe`. */
   shifted(duration: Timeframe): Timeframe
   {
     return new Timeframe(
@@ -23,6 +26,7 @@ export class Timeframe
     );
   }
 
+  /** Render this timeframe in the format `mm:ss::ff`. */
   display(): string
   {
     let m = this.mins.toString().padStart(2, "0");
@@ -31,6 +35,7 @@ export class Timeframe
 
     return [m, s, f].join(":")
   }
+
 
   to_json(): object
   {
