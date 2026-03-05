@@ -5,12 +5,17 @@
 import { subtitles, prefs } from "#scripts/stores";
 import type { Subtitle } from "#scripts/types";
 
+import type { DraggingData } from "#src/routes/subtitles-view.svelte"
+
 import Input    from "#parts/input.svelte";
 import Textarea from "#parts/textarea.svelte";
 import Insert   from "#parts/insert.svelte";
 
 import { slide } from "svelte/transition";
 import { expoOut } from "svelte/easing";
+
+import { getContext } from "svelte";
+    import { json } from "@sveltejs/kit";
 
 
 interface Props {
@@ -20,8 +25,41 @@ interface Props {
 
 let { index, subtitle = $bindable() }: Props = $props();
 
+let dragging: DraggingData = getContext("dragging");
+
 
 let self: HTMLElement;
+
+
+function onmousedown(e: MouseEvent)
+{
+  dragging.grabbed = self;
+
+  if (dragging.ghost) {
+    dragging.ghost.innerHTML = self.innerHTML;
+  }
+
+  dragging.offset_y = self.getBoundingClientRect().y - e.clientY;
+  dragging.mouse_y = e.clientY;
+  dragging.layer_y = dragging.root?.getBoundingClientRect().y ?? 0;
+}
+
+function onmouseenter(e: MouseEvent)
+{
+  e.stopPropagation();
+
+  if (
+    dragging.grabbed
+    && e.target != dragging.grabbed
+    && e.target?.classList.contains("subtitle")
+  ) {
+    $subtitles.reorder_before_by_id(
+      parseInt(dragging.grabbed.dataset.subtitleId),
+      parseInt(e.target.dataset.subtitleId)
+    );
+    $subtitles.subs = $subtitles.subs;
+  }
+}
 
 
 function get(
@@ -51,9 +89,14 @@ function get(
 
 
 <div style:position="relative">
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class="subtitle"
+  class:grabbed={dragging.grabbed?.dataset.subtitleId === subtitle.id.toString()}
   bind:this={self}
+  {onmousedown}
+  {onmouseenter}
+  data-subtitle-id={subtitle.id}
   transition:slide={{ duration: 400, easing: expoOut }}
 >
   <div class="grabber">
@@ -131,6 +174,10 @@ function get(
     border-color: $col-prot;
     outline-color: color.change($col-prot, $alpha: 0.2);
     box-shadow: 0 0 0 rgb(black, 20%);
+  }
+
+  &.grabbed {
+    opacity: 20%;
   }
 }
 

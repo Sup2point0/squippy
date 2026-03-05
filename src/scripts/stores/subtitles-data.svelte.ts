@@ -1,6 +1,6 @@
 import { persisted } from "svelte-persisted-store";
 
-import { Timeframe, Subtitle } from "#scripts/types";
+import { Timeframe, Subtitle, type Int } from "#scripts/types";
 
 
 export class SubtitlesData
@@ -33,6 +33,26 @@ export class SubtitlesData
     this.react();
 
     return true;
+  }
+
+  /** Change the ordering of one subtitle to a new index in the list. */
+  reorder_to_by_idx(index: Int, new_index: Int): boolean
+  {
+    let sub = this.subs.splice(index, 1)[0];
+    this.subs.splice(new_index, 0, sub);
+
+    return true;
+  }
+
+  reorder_before_by_id(subtitle_id: Int, target_id: Int): boolean
+  {
+    let i = this.subs.findIndex(sub => sub.id === subtitle_id);
+    if (i === -1) return false;
+    
+    let j = this.subs.findIndex(sub => sub.id === target_id);
+    if (j === -1) return false;
+
+    return this.reorder_to_by_idx(i, j);
   }
 
   /** Delete the given `subtitle`. */
