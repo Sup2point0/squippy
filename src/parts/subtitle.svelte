@@ -21,6 +21,21 @@ interface Props {
 let { index, subtitle = $bindable() }: Props = $props();
 
 
+let self: HTMLElement;
+
+function ondragstart(e: DragEvent)
+{
+  self.id = "dragged-subtitle";
+  e.dataTransfer.effectAllowed = "move";
+  e.dataTransfer.setData("drag-subtitle", "");
+}
+
+function ondragend(e: DragEvent)
+{
+  self.removeAttribute("id");
+}
+
+
 function get_start(part: "mins" | "secs" | "frames"): () => number | null {
   return () => subtitle.start?.[part] ?? null;
 }
@@ -40,6 +55,9 @@ function get_duration(part: "mins" | "secs" | "frames"): () => number | null {
 <div
   class="subtitle"
   draggable={true}
+  {ondragstart}
+  {ondragend}
+  bind:this={self}
   transition:slide={{ duration: 400, easing: expoOut }}
 >
   <div class="grabber">

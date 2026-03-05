@@ -26,7 +26,7 @@ textarea {
   font-size: 120%;
   background: none;
   @include interactive;
-  border: 1px solid #ddd;
+  border: 1px solid $col-line;
   border-radius: $border-radius;
   transition: all 0.1s ease-out;
 }

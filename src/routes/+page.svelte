@@ -4,16 +4,11 @@ import "#styles/essence.scss";
 
 import { subtitles, prefs } from "#scripts/stores";
 
-import Subtitle    from "#parts/subtitle.svelte";
-import AddSubtitle from "#parts/add-subtitle.svelte";
-import Clicky      from "#parts/clicky.svelte";
-
-import { flip } from "svelte/animate";
-import { expoOut } from "svelte/easing";
+import Clicky from "#parts/clicky.svelte";
+import SubtitlesView from "./subtitles-view.svelte";
 
 
 let exported = $derived($subtitles.export_raw($prefs.default_duration));
-
 
 function export_srt()
 {
@@ -26,26 +21,11 @@ function export_srt()
   a.click();
 }
 
-function ondragover(e: DragEvent)
-{
-  if (e.dataTransfer?.types.includes("task")) {
-    e.preventDefault();
-  }
-}
-
 </script>
 
 
 <div class="root">
-  <main {ondragover}>
-    {#each $subtitles.subs as sub, index (sub.id)}
-      <div animate:flip={{ duration: 500, easing: expoOut }}>
-        <Subtitle {index} bind:subtitle={$subtitles.subs[index]} />
-      </div>
-    {/each}
-
-    <AddSubtitle />
-  </main>
+  <SubtitlesView />
 
   <aside class="preview">
     <p class="lang">SRT</p>
@@ -78,16 +58,6 @@ function ondragover(e: DragEvent)
   justify-content: stretch;
   align-items: stretch;
   gap: 1rem;
-}
-
-main {
-  flex-grow: 1;
-  min-width: 40vw;
-  padding: 0.5rem 1.5rem 4rem 1rem;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: stretch;
-  overflow-y: auto;
 }
 
 .preview {
