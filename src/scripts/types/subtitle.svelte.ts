@@ -19,6 +19,8 @@ export class Subtitle
   /** The text contained in the subtitle. */
   body: string = $state("");
 
+  _textarea?: HTMLElement;
+
 
   constructor(data?: {
     start?:    Timeframe | null,
@@ -34,6 +36,8 @@ export class Subtitle
     this.duration = data?.duration ?? null;
     this.end      = data?.end      ?? null;
     this.body     = data?.body     ?? "";
+
+    this._textarea = undefined;
   }
 
 

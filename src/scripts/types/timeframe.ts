@@ -17,14 +17,14 @@ export class Timeframe
   }
 
 
-  is_null(): boolean
+  is_empty(): boolean
   {
     return (this.mins == null && this.secs == null && this.frames == null);
   }
 
-  is_not_null(): boolean
+  is_nonempty(): boolean
   {
-    return !this.is_null();
+    return !this.is_empty();
   }
 
   /** Is this timeframe valid? i.e. has every component been set? */

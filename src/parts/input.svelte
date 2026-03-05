@@ -35,10 +35,10 @@ let {
 
 
 input {
-  width: 2.5em;
+  width: 2.6em;
   padding: 0.25em 0.5em;
   @include font-ui;
-  font-size: 120%;
+  font-size: 100%;
   background: none;
   @include interactive;
   border: 1px solid $col-line;
@@ -57,8 +57,9 @@ input {
   }
 
   &::placeholder {
-    color: rgb(black, 25%);
+    color: $col-text-placeholder;
     font-size: 80%;
+    transform: translateY(-0.1em);
   }
 
   &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {

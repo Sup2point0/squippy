@@ -72,20 +72,6 @@ function get(
 </script>
 
 
-{#snippet timestamp(field: "start" | "end" | "duration")}
-  <div class="timestamps">
-    <Input placeholder="mm"
-      bind:value={get(field, "mins"),   m => subtitle.set(field, { mins: m })} />
-
-    <Input placeholder="ss"
-      bind:value={get(field, "secs"),   s => subtitle.set(field, { secs: s })} />
-
-    <Input placeholder="ff" max={$prefs.framerate}
-      bind:value={get(field, "frames"), f => subtitle.set(field, { frames: f })} />
-  </div>
-{/snippet}
-
-
 <div style:position="relative">
 <Insert {index} {dragging} />
 
@@ -102,21 +88,42 @@ function get(
   </div>
 
   <div class="left">
-    {@render timestamp("start")}
-    {@render timestamp("end")}
+    <!-- start -->
+    <div class="timestamps">
+      <Input placeholder="mm"
+        bind:value={get("start", "mins"),   m => subtitle.set("start", { mins: m })} />
+
+      <Input placeholder="ss" max={59}
+        bind:value={get("start", "secs"),   s => subtitle.set("start", { secs: s })} />
+
+      <Input placeholder="ff" max={$prefs.framerate}
+        bind:value={get("start", "frames"), f => subtitle.set("start", { frames: f })} />
+    </div>
+    
+    <!-- end -->
+    <div class="timestamps">
+      <Input placeholder="mm" disabled={subtitle.duration?.is_nonempty()}
+        bind:value={get("end", "mins"),   m => subtitle.set("end", { mins: m })} />
+
+      <Input placeholder="ss" disabled={subtitle.duration?.is_nonempty()} max={59}
+        bind:value={get("end", "secs"),   s => subtitle.set("end", { secs: s })} />
+
+      <Input placeholder="ff" disabled={subtitle.duration?.is_nonempty()} max={$prefs.framerate}
+        bind:value={get("end", "frames"), f => subtitle.set("end", { frames: f })} />
+    </div>
   </div>
 
-  <Textarea bind:value={subtitle.body} />
+  <Textarea bind:value={subtitle.body} {subtitle} />
 
   <!-- duration -->
   <div class="timestamps">
-    <Input placeholder="mm" disabled={subtitle.end?.is_not_null()}
+    <Input placeholder="mm" disabled={subtitle.end?.is_nonempty()}
       bind:value={get("duration", "mins"),   m => subtitle.set("duration", { mins: m })} />
 
-    <Input placeholder="ss" disabled={subtitle.end?.is_not_null()}
+    <Input placeholder="ss" disabled={subtitle.end?.is_nonempty()} max={59}
       bind:value={get("duration", "secs"),   s => subtitle.set("duration", { secs: s })} />
 
-    <Input placeholder="ff" disabled={subtitle.end?.is_not_null()} max={$prefs.framerate}
+    <Input placeholder="ff" disabled={subtitle.end?.is_nonempty()} max={$prefs.framerate}
       bind:value={get("duration", "frames"), f => subtitle.set("duration", { frames: f })} />
   </div>
 

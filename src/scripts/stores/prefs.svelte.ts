@@ -11,12 +11,16 @@ export class PrefsData
   /** The default duration subtitles will last for if unspecified. */
   default_duration: Timeframe = $state(new Timeframe(0, 3));
 
+  /** Should potentially distracting UI tidbits be shown? */
+  show_flavour: boolean = $state(true);
+
 
   to_json(): string
   {
     return JSON.stringify({
-      framerate: this.framerate,
+      framerate:        this.framerate,
       default_duration: this.default_duration.to_json(),
+      show_flavour:     this.show_flavour,
     });
   }
 
@@ -26,8 +30,12 @@ export class PrefsData
 
     let out = new PrefsData();
 
-    if (data.framerate)        out.framerate        = data.framerate;
-    if (data.default_duration) out.default_duration = data.default_duration;
+    for (let [key, value] of Object.entries(data)) {
+      if (key in out && value) {
+        /* @ts-ignore */
+        out[key] = value;
+      }
+    }
 
     return out;
   }

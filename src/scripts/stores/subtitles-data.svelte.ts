@@ -25,7 +25,7 @@ export class SubtitlesData
         break;
 
       case "down":
-        if (idx === (this.subs.length - 1)) return false;
+        if (idx === this.subs.length - 1) return false;
         [this.subs[idx], this.subs[idx+1]] = [this.subs[idx+1], this.subs[idx]];
         break;
     }
@@ -65,6 +65,30 @@ export class SubtitlesData
     if (j === -1) return false;
 
     return this.reorder_to_by_idx(i, j, false);
+  }
+
+  change_focus(subtitle: Subtitle, direction: "previous" | "next"): boolean
+  {
+    let idx = this.subs.indexOf(subtitle);
+    if (idx === -1) return false;
+
+    switch (direction) {
+      case "previous":
+        if (idx === 0) {
+          idx = this.subs.length;
+        }
+        this.subs[idx-1]._textarea?.focus();
+        break;
+
+      case "next":
+        if (idx === this.subs.length - 1) {
+          idx = -1;
+        }
+        this.subs[idx+1]._textarea?.focus();
+        break;
+    }
+
+    return true;
   }
 
   /** Delete the given `subtitle`. */
