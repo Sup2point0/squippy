@@ -22,10 +22,12 @@ export interface DraggingData {
 <script lang="ts">
 
 import { subtitles } from "#scripts/stores";
+import { Subtitle as SubtitleData } from "#scripts/types";
 
 import Subtitle      from "#parts/subtitle.svelte";
 import AddSubtitle   from "#parts/add-subtitle.svelte";
 import SubtitleGhost from "#parts/subtitle.ghost.svelte";
+import Clicky        from "#parts/clicky.svelte";
 
 import { onMount, setContext } from "svelte";
 import { flip } from "svelte/animate";
@@ -78,6 +80,13 @@ function onmouseup(e: MouseEvent)
   dragging.sub_id = null;
 }
 
+function clear_subtitles()
+{
+  if (window.confirm("Delete all subtitles and timings? This will clear all work.")) {
+    $subtitles.subs = [new SubtitleData()];
+  }
+}
+
 </script>
 
 
@@ -96,6 +105,10 @@ function onmouseup(e: MouseEvent)
   {/each}
 
   <AddSubtitle />
+
+  <div class="clickies">
+    <Clicky text="Clear" onclick={clear_subtitles} />
+  </div>
 </main>
 
 
@@ -110,6 +123,15 @@ main {
   flex-flow: column nowrap;
   align-items: stretch;
   overflow-y: auto;
+}
+
+.clickies {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.5rem;
 }
 
 </style>

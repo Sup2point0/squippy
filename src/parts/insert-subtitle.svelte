@@ -52,11 +52,8 @@ button.insert {
     cursor: pointer;
     color: rgb(black, 50%);
 
-    .line {
-      background: rgb(black, 10%);
-    }
-
-    .add {
+    .line, .add {
+      color: rgb(black, 50%);
       background: rgb(black, 10%);
     }
   }

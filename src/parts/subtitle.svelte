@@ -9,7 +9,7 @@ import type { DraggingData } from "#src/routes/subtitles-view.svelte"
 
 import Input    from "#parts/input.svelte";
 import Textarea from "#parts/textarea.svelte";
-import Insert   from "#parts/insert.svelte";
+import Insert   from "#parts/insert-subtitle.svelte";
 
 import { slide } from "svelte/transition";
 import { expoOut } from "svelte/easing";
@@ -206,7 +206,13 @@ function get(
   transition: all 0.1s ease-out;
 
   &:where(:hover, :focus-visible, :focus-within) {
-    box-shadow: 0 0 4px rgb(black, 20%);
+    box-shadow: 0 0 4px light-dark(rgb(black, 20%), rgb(white, 20%));
+  }
+
+  &:has(.grabber:hover) {
+    border-color: $col-prot;
+    outline-color: color.change($col-prot, $alpha: 0.2);
+    box-shadow: 0 0 0 transparent;
   }
 
   // &:has(.grabber:active) {
@@ -244,7 +250,7 @@ function get(
   justify-content: center;
   align-items: center;
   @include font-code;
-  color: rgb(black, 20%);
+  color: light-dark(rgb(black, 20%), rgb(white, 60%));
   font-size: 150%;
   opacity: 0;
   transition: all 0.1s ease-out;
@@ -255,11 +261,7 @@ function get(
 
   &:hover {
     cursor: grab;
-    color: rgb(black, 50%);
-  }
-
-  &:active {
-    color: black;
+    color: $col-prot;
   }
 }
 
@@ -274,7 +276,7 @@ function get(
   height: 2.1rem;
 
   @include font-code;
-  color: rgb(black, 20%);
+  color: light-dark(rgb(black, 20%), rgb(white, 75%));
   font-size: 150%;
   background: none;
   border: none;
@@ -292,12 +294,12 @@ function get(
 
   &:hover, &:focus-visible {
     cursor: pointer;
-    color: rgb(black, 50%);
-    background: rgb(black, 10%);
+    color: light-dark(rgb(black, 50%), white);
+    background: light-dark(rgb(black, 10%), rgb(white, 15%));
   }
 
   &:active {
-    background: rgb(black, 20%);
+    background: light-dark(rgb(black, 20%), rgb(white, 40%));
   }
 }
 

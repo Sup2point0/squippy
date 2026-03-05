@@ -70,4 +70,11 @@ input {
   }
 }
 
+
+@media (prefers-contrast: more) {
+  input {
+    border-color: $col-line-contrast;
+  }
+}
+
 </style>

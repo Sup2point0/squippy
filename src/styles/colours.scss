@@ -1,6 +1,8 @@
 $col-prot: oklch(0.5691 0.2343 347.82);
 $col-deut: oklch(0.5691 0.2343 263.32);
 
-$col-text-placeholder: rgb(black, 25%);
+$col-text: light-dark(black, white);
+$col-text-placeholder: light-dark(rgb(black, 25%), rgb(white, 40%));
 
-$col-line: rgb(black, 15%);
+$col-line:          light-dark(rgb(black, 15%), rgb(white, 20%));
+$col-line-contrast: light-dark(rgb(black, 60%), rgb(white, 90%));

@@ -3,14 +3,14 @@
 import "#styles/essence.scss";
 
 import SubtitlesView from "./subtitles-view.svelte";
-import Preview from "./preview.svelte";
+import ExportPreview from "./export-preview.svelte";
 
 </script>
 
 
 <div class="root">
   <SubtitlesView />
-  <Preview />
+  <ExportPreview />
 </div>
 
 

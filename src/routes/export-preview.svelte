@@ -45,7 +45,7 @@ function export_srt()
   flex-grow: 1;
   min-width: 40vw;
   position: relative;
-  background: rgb(black, 3%);
+  background: light-dark(rgb(black, 3%), rgb(white, 5%));
 
   p.lang {
     position: absolute;
@@ -76,6 +76,5 @@ pre {
   flex-flow: row wrap;
   gap: 0.5rem;
 }
-
 
 </style>

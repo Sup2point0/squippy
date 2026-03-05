@@ -11,20 +11,29 @@ let { text, onclick }: Props = $props();
 
 
 let clicked = $state(false);
+let timeout = 0;
 
 function click()
 {
   clicked = true;
   onclick();
-  setTimeout(() => { clicked = false; }, 3000);
+  timeout = setTimeout(() => { clicked = false; }, 3000);
+}
+
+function unclick()
+{
+  if (timeout) clearTimeout(timeout);
+  clicked = false;
 }
 
 </script>
 
 
 <button
-  class:clicked
+  class:clicked={Array.isArray(text) && clicked}
   onclick={click}
+  onmouseover={unclick}
+  onfocus={unclick}
 >
   {Array.isArray(text) ? text[+clicked] : text}
 </button>
@@ -34,8 +43,8 @@ function click()
 
 button {
   padding: 0.5em 1em;
-  color: white;
   @include font-ui;
+  color: white;
   font-size: 100%;
   background: $col-prot;
   border: none;
@@ -51,6 +60,13 @@ button {
   }
 
   &.clicked {
+    background: $col-deut;
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  button:where(:hover, :focus-visible) {
     background: $col-deut;
   }
 }

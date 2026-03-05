@@ -92,4 +92,11 @@ textarea {
   }
 }
 
+
+@media (prefers-contrast: more) {
+  textarea {
+    border-color: $col-line-contrast;
+  }
+}
+
 </style>

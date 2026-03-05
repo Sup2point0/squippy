@@ -33,7 +33,7 @@ let { dragging = $bindable() }: Props = $props();
   z-index: 20;
   top: 0;
   left: 0;
-  background: rgb(black, 8%);
+  background: light-dark(rgb(black, 8%), rgb(white, 8%));
   backdrop-filter: blur(4px);
   opacity: 0;
   transition: opacity 0.1s ease-out;
