@@ -15,7 +15,6 @@ import { slide } from "svelte/transition";
 import { expoOut } from "svelte/easing";
 
 import { getContext } from "svelte";
-    import { json } from "@sveltejs/kit";
 
 
 interface Props {
@@ -33,7 +32,7 @@ let self: HTMLElement;
 
 function onmousedown(e: MouseEvent)
 {
-  dragging.grabbed = self;
+  dragging.sub_id = subtitle.id;
 
   if (dragging.ghost) {
     dragging.ghost.innerHTML = self.innerHTML;
@@ -48,17 +47,22 @@ function onmouseenter(e: MouseEvent)
 {
   e.stopPropagation();
 
-  if (
-    dragging.grabbed
-    && e.target != dragging.grabbed
-    && e.target?.classList.contains("subtitle")
-  ) {
-    $subtitles.reorder_before_by_id(
-      parseInt(dragging.grabbed.dataset.subtitleId),
-      parseInt(e.target.dataset.subtitleId)
-    );
-    $subtitles.subs = $subtitles.subs;
+  console.log("dragging.sub_id =", dragging.sub_id);
+  console.log("subtitle.id =", subtitle.id);
+
+  if (!dragging.sub_id || dragging.sub_id === subtitle.id) return;
+
+  // console.log("$subtitles.subs.before =", $subtitles.subs.map(sub => `${sub.id}-${sub.body}`));
+  if (dragging.direction === "up") {
+    $subtitles.reorder_before_by_id(dragging.sub_id, subtitle.id);
+  } else {
+    $subtitles.reorder_after_by_id(dragging.sub_id, subtitle.id);
   }
+  // console.log("$subtitles.subs.after =", $subtitles.subs.map(sub => `${sub.id}-${sub.body}`));
+  $subtitles.subs = $subtitles.subs;
+
+  dragging.reordering_id = subtitle.id;
+  requestAnimationFrame(() => { dragging.reordering_id = null; });
 }
 
 
@@ -94,11 +98,10 @@ function get(
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class="subtitle"
-  class:grabbed={dragging.grabbed?.dataset.subtitleId === subtitle.id.toString()}
+  class:grabbed={dragging.sub_id === subtitle.id}
   bind:this={self}
   {onmousedown}
   {onmouseenter}
-  data-subtitle-id={subtitle.id}
   transition:slide={{ duration: 400, easing: expoOut }}
 >
   <div class="grabber">

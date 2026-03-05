@@ -9,14 +9,14 @@ interface Props {
   dragging: DraggingData;
 }
 
-let { dragging }: Props = $props();
+let { dragging = $bindable() }: Props = $props();
 
 </script>
 
 
 <div
   class="ghost subtitle"
-  class:haunting={dragging.grabbed}
+  class:haunting={dragging.sub_id}
   bind:this={dragging.ghost}
   style:top="{dragging.mouse_y + dragging.offset_y - dragging.layer_y}px"
 >

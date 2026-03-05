@@ -5,7 +5,6 @@ import "#styles/essence.scss";
 import SubtitlesView from "./subtitles-view.svelte";
 import Preview from "./preview.svelte";
 
-
 </script>
 
 

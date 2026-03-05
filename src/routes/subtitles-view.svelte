@@ -2,14 +2,21 @@
 
 <script module>
 
-export interface DraggingData {
-  root:    HTMLElement | null,
-  grabbed: HTMLElement | null,
-  ghost:   HTMLElement | null,
+import type { Int } from "#scripts/types";
 
-  mouse_y:  number,
-  offset_y: number,
-  layer_y:  number,
+export interface DraggingData {
+  root:   HTMLElement | null;
+  ghost:  HTMLElement | null;
+
+  sub_id:        Int | null;
+  reordering_id: Int | null;
+
+  direction: "up" | "down";
+  mouse_y_previous: number;
+
+  mouse_y:  number;
+  offset_y: number;
+  layer_y:  number;
 }
 
 </script>
@@ -29,9 +36,14 @@ import { expoOut } from "svelte/easing";
 
 let dragging: DraggingData = $state({
   root: null,
-  grabbed: null,
   ghost: null,
 
+  sub_id: null,
+  reordering_id: null,
+
+  direction: "down",
+  mouse_y_previous: 0,
+  
   mouse_y: 0,
   offset_y: 0,
   layer_y: 0,
@@ -51,16 +63,24 @@ function onmousemove(e: MouseEvent)
 {
   e.stopPropagation();
 
-  if (dragging.grabbed) {
+  if (dragging.sub_id) {
+    dragging.mouse_y_previous = dragging.mouse_y;
     dragging.mouse_y = e.clientY;
     dragging.layer_y = self.getBoundingClientRect().y;
+
+    if (dragging.mouse_y < dragging.mouse_y_previous) {
+      dragging.direction = "up";
+    } else {
+      dragging.direction = "down";
+    }
   }
 }
 
 function onmouseup(e: MouseEvent)
 {
   e.stopPropagation();
-  dragging.grabbed = null;
+  dragging.sub_id = null;
+  dragging.reordering_id = null;
 }
 
 </script>
@@ -72,7 +92,7 @@ function onmouseup(e: MouseEvent)
   {onmousemove}
   {onmouseup}
 >
-  <SubtitleGhost {dragging} />
+  <SubtitleGhost bind:dragging />
   
   {#each $subtitles.subs as sub, index (sub.id)}
     <div animate:flip={{ duration: 500, easing: expoOut }}>

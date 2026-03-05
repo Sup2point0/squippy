@@ -36,10 +36,11 @@ export class SubtitlesData
   }
 
   /** Change the ordering of one subtitle to a new index in the list. */
-  reorder_to_by_idx(index: Int, new_index: Int): boolean
+  reorder_to_by_idx(index: Int, new_index: Int, correct?: boolean): boolean
   {
+    let idx = new_index - (index < new_index && correct ? 1 : 0);
     let sub = this.subs.splice(index, 1)[0];
-    this.subs.splice(new_index, 0, sub);
+    this.subs.splice(idx, 0, sub);
 
     return true;
   }
@@ -52,7 +53,18 @@ export class SubtitlesData
     let j = this.subs.findIndex(sub => sub.id === target_id);
     if (j === -1) return false;
 
-    return this.reorder_to_by_idx(i, j);
+    return this.reorder_to_by_idx(i, j, true);
+  }
+
+  reorder_after_by_id(subtitle_id: Int, target_id: Int): boolean
+  {
+    let i = this.subs.findIndex(sub => sub.id === subtitle_id);
+    if (i === -1) return false;
+    
+    let j = this.subs.findIndex(sub => sub.id === target_id);
+    if (j === -1) return false;
+
+    return this.reorder_to_by_idx(i, j, false);
   }
 
   /** Delete the given `subtitle`. */
@@ -107,6 +119,7 @@ export class SubtitlesData
     let data = JSON.parse(json);
 
     let out = new SubtitlesData();
+    /* @ts-ignore */
     out.subs = data.subtitles?.map(sub => Subtitle.from_json(sub)) ?? out.subs;
 
     return out;
