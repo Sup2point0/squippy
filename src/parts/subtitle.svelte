@@ -23,40 +23,36 @@ let { index, subtitle = $bindable() }: Props = $props();
 
 let self: HTMLElement;
 
-function ondragstart(e: DragEvent)
+
+function get(
+  field: "start" | "end" | "duration",
+  component: "mins" | "secs" | "frames",
+): () => number | null
 {
-  self.id = "dragged-subtitle";
-  e.dataTransfer.effectAllowed = "move";
-  e.dataTransfer.setData("drag-subtitle", "");
-}
-
-function ondragend(e: DragEvent)
-{
-  self.removeAttribute("id");
-}
-
-
-function get_start(part: "mins" | "secs" | "frames"): () => number | null {
-  return () => subtitle.start?.[part] ?? null;
-}
-
-function get_end(part: "mins" | "secs" | "frames"): () => number | null {
-  return () => subtitle.end?.[part] ?? null;
-}
-
-function get_duration(part: "mins" | "secs" | "frames"): () => number | null {
-  return () => subtitle.duration?.[part] ?? null;
+  /* @ts-ignore */
+  return () => subtitle[field]?.[component] ?? null;
 }
 
 </script>
 
 
+{#snippet timestamp(field: "start" | "end" | "duration")}
+  <div class="timestamps">
+    <Input placeholder="mm"
+      bind:value={get(field, "mins"),   m => subtitle.set(field, { mins: m })} />
+
+    <Input placeholder="ss"
+      bind:value={get(field, "secs"),   s => subtitle.set(field, { secs: s })} />
+
+    <Input placeholder="ff" max={$prefs.framerate}
+      bind:value={get(field, "frames"), f => subtitle.set(field, { frames: f })} />
+  </div>
+{/snippet}
+
+
 <div style:position="relative">
 <div
   class="subtitle"
-  draggable={true}
-  {ondragstart}
-  {ondragend}
   bind:this={self}
   transition:slide={{ duration: 400, easing: expoOut }}
 >
@@ -65,29 +61,8 @@ function get_duration(part: "mins" | "secs" | "frames"): () => number | null {
   </div>
 
   <div class="left">
-    <!-- start -->
-    <div class="timestamps">
-      <Input placeholder="mm"
-        bind:value={get_start("mins"),   m => subtitle.set("start", { mins: m })} />
-
-      <Input placeholder="ss"
-        bind:value={get_start("secs"),   s => subtitle.set("start", { secs: s })} />
-
-      <Input placeholder="ff" max={$prefs.framerate}
-        bind:value={get_start("frames"), f => subtitle.set("start", { frames: f })} />
-    </div>
-
-    <!-- end -->
-    <div class="timestamps">
-      <Input placeholder="mm"
-        bind:value={get_end("mins"),   m => subtitle.set("end", { mins: m })} />
-
-      <Input placeholder="ss"
-        bind:value={get_end("secs"),   s => subtitle.set("end", { secs: s })} />
-
-      <Input placeholder="ff" max={$prefs.framerate}
-        bind:value={get_end("frames"), f => subtitle.set("end", { frames: f })} />
-    </div>
+    {@render timestamp("start")}
+    {@render timestamp("end")}
   </div>
 
   <Textarea bind:value={subtitle.body} />
@@ -95,13 +70,13 @@ function get_duration(part: "mins" | "secs" | "frames"): () => number | null {
   <!-- duration -->
   <div class="timestamps">
     <Input placeholder="mm" disabled={subtitle.end?.is_not_null()}
-      bind:value={get_duration("mins"),   m => subtitle.set("duration", { mins: m })} />
+      bind:value={get("duration", "mins"),   m => subtitle.set("duration", { mins: m })} />
 
     <Input placeholder="ss" disabled={subtitle.end?.is_not_null()}
-      bind:value={get_duration("secs"),   s => subtitle.set("duration", { secs: s })} />
+      bind:value={get("duration", "secs"),   s => subtitle.set("duration", { secs: s })} />
 
     <Input placeholder="ff" disabled={subtitle.end?.is_not_null()} max={$prefs.framerate}
-      bind:value={get_duration("frames"), f => subtitle.set("duration", { frames: f })} />
+      bind:value={get("duration", "frames"), f => subtitle.set("duration", { frames: f })} />
   </div>
 
   <div class="actions">
