@@ -65,6 +65,7 @@ const placeholder = flavour.sample_value();
 <textarea
   bind:value
   bind:this={subtitle._textarea}
+  title="Displayed text of subtitle"
   placeholder={$prefs.show_flavour && placeholder}
   {onkeydown}
 >

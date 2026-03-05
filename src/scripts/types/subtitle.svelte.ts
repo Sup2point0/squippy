@@ -52,7 +52,7 @@ export class Subtitle
   )
   {
     if (this[field] == null) {
-      this[field] = new Timeframe(data.mins, data.secs, data.frames);
+      this[field] = new Timeframe(data.mins ?? 0, data.secs ?? 0, data.frames ?? 0);
     }
     else {
       if (data.mins !== undefined) this[field].mins = data.mins;

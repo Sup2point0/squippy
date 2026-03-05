@@ -4,6 +4,7 @@
 
 interface Props {
   value: any;
+  title: string;
   placeholder?: string;
   max?: number;
   disabled?: boolean;
@@ -11,6 +12,7 @@ interface Props {
 
 let {
   value = $bindable(),
+  title,
   placeholder = "",
   max,
   disabled,
@@ -22,6 +24,7 @@ let {
 <input
   type="number"
   bind:value
+  {title}
   {placeholder}
   min={0}
   {max}

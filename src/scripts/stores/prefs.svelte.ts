@@ -9,7 +9,7 @@ export class PrefsData
   framerate: number = $state(60);
 
   /** The default duration subtitles will last for if unspecified. */
-  default_duration: Timeframe = $state(new Timeframe(0, 3));
+  default_duration: Timeframe = $state(new Timeframe(0, 3, 0));
 
   /** Should potentially distracting UI tidbits be shown? */
   show_flavour: boolean = $state(true);
