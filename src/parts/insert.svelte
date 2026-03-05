@@ -16,20 +16,13 @@ interface Props {
 
 let { index, dragging }: Props = $props();
 
-
-function insert_subtitle()
-{
-  $subtitles.subs.splice(index, 0, new Subtitle());
-  $subtitles.subs = $subtitles.subs;
-}
-
 </script>
 
 
 <button
   class="insert"
   class:hidden={dragging.sub_id}
-  onclick={insert_subtitle}
+  onclick={() => $subtitles.subs.splice(index, 0, new Subtitle())}
 >
   <div class="line"></div>
   <div class="add">+</div>

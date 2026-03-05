@@ -3,7 +3,7 @@
 <script lang="ts">
 
 import { subtitles, prefs } from "#scripts/stores";
-import type { Subtitle } from "#scripts/types";
+import { Subtitle } from "#scripts/types";
 
 import type { DraggingData } from "#src/routes/subtitles-view.svelte"
 
@@ -15,7 +15,6 @@ import { slide } from "svelte/transition";
 import { expoOut } from "svelte/easing";
 
 import { getContext } from "svelte";
-    import { stopPropagation } from "svelte/legacy";
 
 
 interface Props {
@@ -59,6 +58,31 @@ function onmouseenter(e: MouseEvent)
   $subtitles.subs = $subtitles.subs;
 }
 
+function onkeydown(e: KeyboardEvent)
+{
+  if (!self.contains(document.activeElement)) return;
+
+  if (e.altKey) {
+    switch (e.key) {
+      case "ArrowUp":   e.preventDefault(); $subtitles.focused = subtitle; $subtitles.reorder_in(subtitle, "up"); break;
+      case "ArrowDown": e.preventDefault(); $subtitles.focused = subtitle; $subtitles.reorder_in(subtitle, "down"); break;
+    }
+    requestAnimationFrame(() => $subtitles.sync_focus());
+  }
+
+  if (e.ctrlKey) {
+    switch (e.key) {
+      case "Enter":
+        e.preventDefault();
+        let sub = new Subtitle()
+        $subtitles.subs.splice(index+1, 0, sub);
+        $subtitles.focus(sub);
+        requestAnimationFrame(() => $subtitles.sync_focus());
+        break;
+    }
+  }
+}
+
 
 function get(
   field: "start" | "end" | "duration",
@@ -81,6 +105,7 @@ function get(
   class:grabbed={dragging.sub_id === subtitle.id}
   bind:this={self}
   {onmouseenter}
+  {onkeydown}
   transition:slide={{ duration: 400, easing: expoOut }}
 >
   <div class="grabber" {onmousedown}>

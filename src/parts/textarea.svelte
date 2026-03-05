@@ -20,8 +20,23 @@ function onkeydown(e: KeyboardEvent)
 {
   if (e.ctrlKey || e.metaKey) {
     switch (e.key) {
-      case "ArrowUp":   $subtitles.change_focus(subtitle, "previous"); break;
-      case "ArrowDown": $subtitles.change_focus(subtitle, "next"); break;
+      case "ArrowUp":
+        if (e.shiftKey) {
+          $subtitles.focus($subtitles.subs[0]);
+        }
+        else {
+          $subtitles.change_focus(subtitle, "previous");
+        }
+        break;
+      
+        case "ArrowDown":
+        if (e.shiftKey) {
+          $subtitles.focus($subtitles.subs[$subtitles.subs.length - 1]);
+        }
+        else {
+          $subtitles.change_focus(subtitle, "next");
+        }
+        break;
     }
   }
 }
@@ -29,9 +44,17 @@ function onkeydown(e: KeyboardEvent)
 
 const flavour = new FrozenWeightedList(
   [20, "The quick brown fox jumps over the lazy dog"],
+  [20, "Lorem ipsum dolor sit amet, consectetur adipiscing elit"],
   [20, "What’s on your mind today?"],
+  [20, "The start of something brilliant..."],
+  [20, "Your work is regularly saved to your device’s localStorage."],
+  [20, "If you’d like to request a feature, just open an Issue in the GitHub repo ;)"],
   [20, "Never gonna give you up~"],
   [2, "sup sup’s sups sup sup’s sup sup sup sup’s sup sups"],
+  [2, "If you’re enjoying Squippy, do let me know on GitHub!"],
+  [2, "Perfectly balanced, as all things should be"],
+  [2, "Is free will real?"],
+  [2, "subtext is famously an anagram"],
 );
 
 const placeholder = flavour.sample_value();

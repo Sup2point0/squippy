@@ -7,9 +7,18 @@ export class SubtitlesData
 {
   subs: Subtitle[] = $state([]);
 
+  focused: Subtitle | null = null;
+
+
   react()
   {
     subtitles.update(v => v);
+  }
+
+  sync_focus()
+  {
+    this.focused?._textarea?.focus();
+    this.focused?._textarea?.scrollIntoView({ behavior: "smooth" });
   }
 
   /** Change the ordering of one subtitle to be either 1 position or 1 position later. */
@@ -67,6 +76,16 @@ export class SubtitlesData
     return this.reorder_to_by_idx(i, j, false);
   }
 
+  focus(subtitle: Subtitle): boolean
+  {
+    if (!subtitle._textarea) return false;
+
+    subtitle._textarea.focus();
+    this.focused = subtitle;
+
+    return true;
+  }
+
   change_focus(subtitle: Subtitle, direction: "previous" | "next"): boolean
   {
     let idx = this.subs.indexOf(subtitle);
@@ -77,14 +96,14 @@ export class SubtitlesData
         if (idx === 0) {
           idx = this.subs.length;
         }
-        this.subs[idx-1]._textarea?.focus();
+        this.focus(this.subs[idx-1]);
         break;
 
       case "next":
         if (idx === this.subs.length - 1) {
           idx = -1;
         }
-        this.subs[idx+1]._textarea?.focus();
+        this.focus(this.subs[idx+1]);
         break;
     }
 
