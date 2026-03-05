@@ -17,8 +17,18 @@ export class Timeframe
   }
 
 
+  is_null(): boolean
+  {
+    return (this.mins == null && this.secs == null && this.frames == null);
+  }
+
+  is_not_null(): boolean
+  {
+    return !this.is_null();
+  }
+
   /** Is this timeframe valid? i.e. has every component been set? */
-  valid(): boolean
+  is_valid(): boolean
   {
     return (this.mins != null && this.secs != null && this.frames != null);
   }
@@ -26,7 +36,7 @@ export class Timeframe
   /** Return this timeframe if it is valid, otherwise return `null`. */
   check(): Timeframe | null
   {
-    return this.valid() ? this : null
+    return this.is_valid() ? this : null
   }
 
   /** (out-of-place) Return this timeframe shifted by `duration` as a new `Timeframe`. */

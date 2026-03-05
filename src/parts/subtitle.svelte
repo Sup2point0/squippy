@@ -76,13 +76,13 @@ function get_duration(part: "mins" | "secs" | "frames"): () => number | null {
 
   <!-- duration -->
   <div class="timestamps">
-    <Input placeholder="mm"
+    <Input placeholder="mm" disabled={subtitle.end?.is_not_null()}
       bind:value={get_duration("mins"),   m => subtitle.set("duration", { mins: m })} />
 
-    <Input placeholder="ss"
+    <Input placeholder="ss" disabled={subtitle.end?.is_not_null()}
       bind:value={get_duration("secs"),   s => subtitle.set("duration", { secs: s })} />
 
-    <Input placeholder="ff" max={$prefs.framerate}
+    <Input placeholder="ff" disabled={subtitle.end?.is_not_null()} max={$prefs.framerate}
       bind:value={get_duration("frames"), f => subtitle.set("duration", { frames: f })} />
   </div>
 
@@ -129,7 +129,7 @@ function get_duration(part: "mins" | "secs" | "frames"): () => number | null {
   outline: 3px solid transparent;
   transition: all 0.1s ease-out;
 
-  &:hover, &:focus-visible {
+  &:where(:hover, :focus-visible, :focus-within) {
     box-shadow: 0 0 4px rgb(black, 20%);
   }
 
@@ -199,10 +199,10 @@ function get_duration(part: "mins" | "secs" | "frames"): () => number | null {
   opacity: 0;
   transition: all 0.1s ease-out;
 
-  .subtitle:where(:hover, :focus-visible) & {
+  .subtitle:where(:hover, :focus-visible, :focus-within) &{
     opacity: 100%;
   }
-  .subtitle:where(:hover, :focus-visible) &[disabled] {
+  .subtitle:where(:hover, :focus-visible, :focus-within) &[disabled] {
     pointer-events: none;
     opacity: 20%;
   }

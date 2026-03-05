@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
 import "#styles/essence.scss";
 
@@ -26,11 +26,18 @@ function export_srt()
   a.click();
 }
 
+function ondragover(e: DragEvent)
+{
+  if (e.dataTransfer?.types.includes("task")) {
+    e.preventDefault();
+  }
+}
+
 </script>
 
 
 <div class="root">
-  <main>
+  <main {ondragover}>
     {#each $subtitles.subs as sub, index (sub.id)}
       <div animate:flip={{ duration: 500, easing: expoOut }}>
         <Subtitle {index} bind:subtitle={$subtitles.subs[index]} />

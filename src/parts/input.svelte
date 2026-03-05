@@ -6,12 +6,14 @@ interface Props {
   value: any;
   placeholder?: string;
   max?: number;
+  disabled?: boolean;
 }
 
 let {
   value = $bindable(),
   placeholder = "",
   max,
+  disabled,
 }: Props = $props();
 
 </script>
@@ -23,6 +25,7 @@ let {
   {placeholder}
   min={0}
   {max}
+  {disabled}
 />
 
 
@@ -42,6 +45,17 @@ input {
   border-radius: $border-radius;
   transition: all 0.1s ease-out;
 
+  &:invalid {
+    color: $col-prot;
+    background: color.change($col-prot, $alpha: 0.08);
+    border-color: $col-prot;
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    opacity: 25%;
+  }
+
   &::placeholder {
     color: rgb(black, 25%);
     font-size: 80%;
@@ -49,12 +63,6 @@ input {
 
   &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
     display: none;
-  }
-
-  &:invalid {
-    color: $col-prot;
-    background: color.change($col-prot, $alpha: 0.08);
-    border-color: $col-prot;
   }
 }
 
