@@ -94,7 +94,7 @@ function onmouseup(e: MouseEvent)
 main {
   flex-grow: 1;
   min-width: 40vw;
-  padding: 0.5rem 1.5rem 4rem 1rem;
+  padding: 1.5rem 1.5rem 4rem 1rem;
   position: relative;
   display: flex;
   flex-flow: column nowrap;

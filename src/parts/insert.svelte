@@ -17,16 +17,14 @@ let { index } = $props();
 
 function insert_subtitle()
 {
-  $subtitles.subs.splice(index +1, 0, new Subtitle());
+  $subtitles.subs.splice(index, 0, new Subtitle());
   $subtitles.subs = $subtitles.subs;
 }
 
 </script>
 
 
-<button class="insert"
-  onclick={insert_subtitle}
->
+<button class="insert" onclick={insert_subtitle}>
   <div class="line"></div>
   <div class="add">+</div>
 </button>
@@ -34,19 +32,19 @@ function insert_subtitle()
 
 <style lang="scss">
 
-button {
+button.insert {
   width: calc(100% + 1.5rem);
   height: 1em;
   position: absolute;
   z-index: 2;
-  bottom: 0;
+  top: 0;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   font-size: 150%;
   background: none;
   border: none;
-  transform: translateY(0.6rem);
+  transform: translateY(-0.9rem);
   transition: all 0.1s ease-out;
 
   .line {
@@ -85,6 +83,10 @@ button {
       background: rgb(black, 20%);
     }
   }
+}
+
+:global(.subtitle:active button.insert) {
+  opacity: 0%;
 }
 
 </style>
