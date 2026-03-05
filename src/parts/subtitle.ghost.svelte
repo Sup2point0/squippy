@@ -1,0 +1,103 @@
+<!-- @component SubtitleGhost -->
+
+<script lang="ts">
+
+import type { DraggingData } from "#src/routes/subtitles-view.svelte";
+
+
+interface Props {
+  dragging: DraggingData;
+}
+
+let { dragging }: Props = $props();
+
+</script>
+
+
+<div
+  class="ghost subtitle"
+  class:haunting={dragging.grabbed}
+  bind:this={dragging.ghost}
+  style:top="{dragging.mouse_y + dragging.offset_y - dragging.layer_y}px"
+>
+</div>
+
+
+<style lang="scss">
+
+
+.ghost {
+  pointer-events: none;
+  z-index: -2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0%;
+
+  &.haunting {
+    z-index: 20;
+    opacity: 100%;
+  }
+}
+
+.subtitle {
+  padding: 0.5rem 0.5rem;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  gap: 0.5rem;
+
+  font-size: unset;
+  border: 1px solid transparent;
+  border-radius: 1em;
+  outline: 3px solid transparent;
+}
+
+.left {
+  align-self: start;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: start;
+  gap: 0.5rem;
+}
+
+.timestamps {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: start;
+  gap: 0.25rem;
+}
+
+
+.grabber {
+  padding: 0 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include font-code;
+  color: rgb(black, 20%);
+  opacity: 0;
+  transition: all 0.1s ease-out;
+}
+
+.actions {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.actions button {
+  width: 2.1rem;
+  height: 2.1rem;
+
+  @include font-code;
+  color: rgb(black, 20%);
+  font-size: 150%;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.1s ease-out;
+}
+
+</style>
