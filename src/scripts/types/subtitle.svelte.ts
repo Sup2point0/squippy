@@ -37,53 +37,31 @@ export class Subtitle
   }
 
 
-  /** Alter the starting timestamp of this subtitle, initialising it if it was previously unset, or uninitialising it if all components have been cleared. */
-  set_start(data: {
-    mins?: number | null,
-    secs?: number | null,
-    frames?: number | null,
-  })
+  /** Alter either the starting timestamp, ending timestamp, or duration of this subtitle, initialising it if it was previously unset, or uninitialising it if all components have been cleared. */
+  set(
+    field: "start" | "end" | "duration",
+    data: {
+      mins?: number | null,
+      secs?: number | null,
+      frames?: number | null,
+    }
+  )
   {
-    if (this.start == null) {
-      this.start = new Timeframe(data.mins, data.secs, data.frames);
+    if (this[field] == null) {
+      this[field] = new Timeframe(data.mins, data.secs, data.frames);
     }
     else {
-      if (data.mins !== undefined) this.start.mins = data.mins;
-      if (data.secs !== undefined) this.start.secs = data.secs;
-      if (data.frames !== undefined) this.start.frames = data.frames;
+      if (data.mins !== undefined) this[field].mins = data.mins;
+      if (data.secs !== undefined) this[field].secs = data.secs;
+      if (data.frames !== undefined) this[field].frames = data.frames;
     }
     
     if (
-        this.start.mins == null
-      && this.start.secs == null
-      && this.start.frames == null
+        this[field].mins == null
+      && this[field].secs == null
+      && this[field].frames == null
     ) {
-      this.start = null;
-    }
-  }
-
-  /** Alter the ending timestamp of this subtitle, initialising it if it was previously unset, or uninitialising it if all components have been cleared. */
-  set_end(data: {
-    mins?: number | null,
-    secs?: number | null,
-    frames?: number | null,
-  })
-  {
-    if (this.end == null) {
-      this.end = new Timeframe(data.mins, data.secs, data.frames);
-    }
-    else {
-      if (data.mins !== undefined) this.end.mins = data.mins;
-      if (data.secs !== undefined) this.end.secs = data.secs;
-      if (data.frames !== undefined) this.end.frames = data.frames;
-    }
-    
-    if (
-        this.end.mins == null
-      && this.end.secs == null
-      && this.end.frames == null
-    ) {
-      this.end = null;
+      this[field] = null;
     }
   }
 

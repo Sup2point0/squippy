@@ -8,16 +8,27 @@ import { subtitles } from "#scripts/stores";
 import { Subtitle } from "#scripts/types";
 
 
+let self: HTMLElement;
+
+
 function add_subtitle()
 {
   $subtitles.subs.push(new Subtitle());
   $subtitles.subs = $subtitles.subs;
+
+  setTimeout(() => {
+    self.parentElement?.scrollTo({
+      top: self.parentElement.scrollHeight,
+      behavior: "smooth"
+    });
+  }, 100);
 }
 
 </script>
 
 
 <button
+  bind:this={self}
   onclick={add_subtitle}
 >
   +
@@ -27,7 +38,7 @@ function add_subtitle()
 <style lang="scss">
 
 button {
-  padding: 0.5rem 1.5rem;
+  padding: 0 1.5rem;
   margin-top: 1rem;
   @include font-code;
   color: rgb(black, 20%);

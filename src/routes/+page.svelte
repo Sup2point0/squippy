@@ -65,7 +65,7 @@ function export_srt()
 .root {
   width: 100vw;
   height: 100vh;
-  padding: 1rem;
+  padding: 0.5rem;
   display: flex;
   flex-flow: row nowrap;
   justify-content: stretch;
@@ -76,10 +76,10 @@ function export_srt()
 main {
   flex-grow: 1;
   min-width: 40vw;
-  padding-top: 0.5rem;
+  padding: 0.5rem 1.5rem 4rem 1rem;
   display: flex;
   flex-flow: column nowrap;
-  align-items: center;
+  align-items: stretch;
   overflow-y: auto;
 }
 
