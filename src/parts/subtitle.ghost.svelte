@@ -28,15 +28,18 @@ let { dragging = $bindable() }: Props = $props();
 
 .ghost {
   pointer-events: none;
-  z-index: -2;
+  width: 100%;
   position: absolute;
+  z-index: 20;
   top: 0;
   left: 0;
-  opacity: 0%;
+  background: rgb(black, 8%);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
 
   &.haunting {
-    z-index: 20;
-    opacity: 100%;
+    opacity: 1;
   }
 }
 

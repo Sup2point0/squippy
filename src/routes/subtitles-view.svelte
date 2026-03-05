@@ -8,9 +8,7 @@ export interface DraggingData {
   root:   HTMLElement | null;
   ghost:  HTMLElement | null;
 
-  sub_id:        Int | null;
-  reordering_id: Int | null;
-
+  sub_id: Int | null;
   direction: "up" | "down";
   mouse_y_previous: number;
 
@@ -39,8 +37,6 @@ let dragging: DraggingData = $state({
   ghost: null,
 
   sub_id: null,
-  reordering_id: null,
-
   direction: "down",
   mouse_y_previous: 0,
   
@@ -80,7 +76,6 @@ function onmouseup(e: MouseEvent)
 {
   e.stopPropagation();
   dragging.sub_id = null;
-  dragging.reordering_id = null;
 }
 
 </script>

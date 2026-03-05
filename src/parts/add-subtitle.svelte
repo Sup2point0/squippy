@@ -39,7 +39,7 @@ function add_subtitle()
 
 button {
   padding: 0 1.5rem;
-  margin-top: 1rem;
+  margin: 1rem 5rem 0;
   @include font-code;
   color: rgb(black, 20%);
   font-size: 200%;

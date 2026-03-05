@@ -3,6 +3,7 @@
 <script lang="ts">
 
 import type { Int } from "#scripts/types";
+import type { DraggingData } from "#src/routes/subtitles-view.svelte";
 
 import { subtitles } from "#scripts/stores";
 import { Subtitle } from "#scripts/types";
@@ -10,9 +11,10 @@ import { Subtitle } from "#scripts/types";
 
 interface Props {
   index: Int;
+  dragging: DraggingData;
 }
 
-let { index } = $props();
+let { index, dragging }: Props = $props();
 
 
 function insert_subtitle()
@@ -24,7 +26,11 @@ function insert_subtitle()
 </script>
 
 
-<button class="insert" onclick={insert_subtitle}>
+<button
+  class="insert"
+  class:hidden={dragging.sub_id}
+  onclick={insert_subtitle}
+>
   <div class="line"></div>
   <div class="add">+</div>
 </button>
@@ -34,36 +40,20 @@ function insert_subtitle()
 
 button.insert {
   width: calc(100% + 1.5rem);
-  height: 1em;
+  height: 1rem;
   position: absolute;
   z-index: 2;
   top: 0;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+
   font-size: 150%;
   background: none;
   border: none;
-  transform: translateY(-0.9rem);
+  transform: translateY(-0.64rem);
+  opacity: 1.0;
   transition: all 0.1s ease-out;
-
-  .line {
-    width: 100%;
-    height: 0.5rem;
-    background: transparent;
-    border-radius: 0.25rem;
-    transition: all 0.1s ease-out;
-  }
-
-  .add {
-    width: 2rem;
-    height: 2rem;
-    @include font-code;
-    color: rgb(black, 20%);
-    background: transparent;
-    border-radius: 50%;
-    transition: all 0.1s ease-out;
-  }
 
   &:hover, &:focus-visible {
     cursor: pointer;
@@ -83,10 +73,34 @@ button.insert {
       background: rgb(black, 20%);
     }
   }
+
+  &.hidden {
+    opacity: 0;
+  }
+}
+
+.line {
+  width: 100%;
+  height: 0.5rem;
+  background: transparent;
+  border-radius: 0.25rem;
+  transition: all 0.1s ease-out;
+}
+
+.add {
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  min-height: 2rem;
+  @include font-code;
+  color: rgb(black, 20%);
+  background: transparent;
+  border-radius: 50%;
+  transition: all 0.1s ease-out;
 }
 
 :global(.subtitle:active button.insert) {
-  opacity: 0%;
+  opacity: 0;
 }
 
 </style>

@@ -19,7 +19,6 @@ let { value = $bindable() }: Props = $props();
 textarea {
   resize: none;
   flex-grow: 1;
-  // width: 20em;
   height: 5em;
   padding: 0.75em;
   @include font-ui;

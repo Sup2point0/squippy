@@ -15,6 +15,7 @@ import { slide } from "svelte/transition";
 import { expoOut } from "svelte/easing";
 
 import { getContext } from "svelte";
+    import { stopPropagation } from "svelte/legacy";
 
 
 interface Props {
@@ -35,7 +36,8 @@ function onmousedown(e: MouseEvent)
   dragging.sub_id = subtitle.id;
 
   if (dragging.ghost) {
-    dragging.ghost.innerHTML = self.innerHTML;
+    // dragging.ghost.innerHTML = self.innerHTML;
+    dragging.ghost.style.height = `${self.offsetHeight}px`;
   }
 
   dragging.offset_y = self.getBoundingClientRect().y - e.clientY;
@@ -47,22 +49,14 @@ function onmouseenter(e: MouseEvent)
 {
   e.stopPropagation();
 
-  console.log("dragging.sub_id =", dragging.sub_id);
-  console.log("subtitle.id =", subtitle.id);
-
   if (!dragging.sub_id || dragging.sub_id === subtitle.id) return;
 
-  // console.log("$subtitles.subs.before =", $subtitles.subs.map(sub => `${sub.id}-${sub.body}`));
   if (dragging.direction === "up") {
     $subtitles.reorder_before_by_id(dragging.sub_id, subtitle.id);
   } else {
     $subtitles.reorder_after_by_id(dragging.sub_id, subtitle.id);
   }
-  // console.log("$subtitles.subs.after =", $subtitles.subs.map(sub => `${sub.id}-${sub.body}`));
   $subtitles.subs = $subtitles.subs;
-
-  dragging.reordering_id = subtitle.id;
-  requestAnimationFrame(() => { dragging.reordering_id = null; });
 }
 
 
@@ -93,18 +87,17 @@ function get(
 
 
 <div style:position="relative">
-<Insert {index} />
+<Insert {index} {dragging} />
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class="subtitle"
   class:grabbed={dragging.sub_id === subtitle.id}
   bind:this={self}
-  {onmousedown}
   {onmouseenter}
   transition:slide={{ duration: 400, easing: expoOut }}
 >
-  <div class="grabber">
+  <div class="grabber" {onmousedown}>
     <div>=</div>
   </div>
 
@@ -172,15 +165,16 @@ function get(
     box-shadow: 0 0 4px rgb(black, 20%);
   }
 
-  &:has(.grabber:active) {
-    user-select: none;
-    border-color: $col-prot;
-    outline-color: color.change($col-prot, $alpha: 0.2);
-    box-shadow: 0 0 0 rgb(black, 20%);
-  }
+  // &:has(.grabber:active) {
+  //   user-select: none;
+  //   border-color: $col-prot;
+  //   outline-color: color.change($col-prot, $alpha: 0.2);
+  //   box-shadow: 0 0 0 rgb(black, 20%);
+  // }
 
   &.grabbed {
-    opacity: 0%;
+    user-select: none;
+    opacity: 0;
   }
 }
 
@@ -201,21 +195,23 @@ function get(
 
 
 .grabber {
-  padding: 0 0.5rem;
+  padding: 0 0.1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   @include font-code;
   color: rgb(black, 20%);
+  font-size: 150%;
   opacity: 0;
   transition: all 0.1s ease-out;
 
   .subtitle:where(:hover, :focus-visible) & {
-    opacity: 100%;
+    opacity: 1;
   }
 
   &:hover {
     cursor: grab;
+    color: rgb(black, 50%);
   }
 
   &:active {
@@ -243,7 +239,7 @@ function get(
   transition: all 0.1s ease-out;
 
   .subtitle:where(:hover, :focus-visible, :focus-within) &{
-    opacity: 100%;
+    opacity: 1;
   }
   .subtitle:where(:hover, :focus-visible, :focus-within) &[disabled] {
     pointer-events: none;
