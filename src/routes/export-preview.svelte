@@ -61,16 +61,17 @@ pre {
   height: 100%;
   padding: 1em;
   overflow-y: scroll;
+  white-space: pre-wrap;
+  white-space-collapse: break-spaces;
 
   code {
     @include font-code;
-    word-wrap:break-word
   }
 }
 
 .clickies {
   position: absolute;
-  bottom: 0.5rem;
+  bottom: 1.5rem;
   right: 1.5rem;
   display: flex;
   flex-flow: row wrap;

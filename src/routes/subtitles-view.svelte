@@ -116,7 +116,7 @@ function clear_subtitles()
 
 main {
   flex-grow: 1;
-  min-width: 40vw;
+  min-width: 50vw;
   padding: 1.5rem 1.5rem 4rem 1rem;
   position: relative;
   display: flex;
@@ -127,7 +127,7 @@ main {
 
 .clickies {
   position: absolute;
-  bottom: 0.5rem;
+  bottom: 1.5rem;
   right: 1.5rem;
   display: flex;
   flex-flow: row wrap;

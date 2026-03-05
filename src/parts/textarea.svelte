@@ -75,9 +75,10 @@ const placeholder = flavour.sample_value();
 <style lang="scss">
 
 textarea {
-  resize: none;
+  resize: vertical;
   flex-grow: 1;
-  height: 5em;
+  height: 5.5em;
+  field-sizing: content;
   padding: 0.75em;
   @include font-ui;
   font-size: 100%;

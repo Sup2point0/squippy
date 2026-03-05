@@ -74,10 +74,15 @@ function onkeydown(e: KeyboardEvent)
     switch (e.key) {
       case "Enter":
         e.preventDefault();
+        
         let sub = new Subtitle()
         $subtitles.subs.splice(index+1, 0, sub);
-        $subtitles.focus(sub);
-        requestAnimationFrame(() => $subtitles.sync_focus());
+        
+        requestAnimationFrame(() => {
+          $subtitles.focus(sub);
+          $subtitles.sync_focus();
+        });
+
         break;
     }
   }
