@@ -85,16 +85,15 @@ function onmouseup(e: MouseEvent)
 
 function upload_file()
 {
+  if ($subtitles.subs.length > 1) {
+    if (!window.confirm("Overwrite current work with content of uploaded file?")) return;
+  }
+
   if (upload === undefined) {
     upload = document.createElement("input");
     upload.type = "file";
     upload.accept = ".srt";
-
     upload.addEventListener("change", process_file);
-  }
-
-  if ($subtitles.subs.length > 1) {
-    if (!window.confirm("Overwrite current work with content of uploaded file?")) return;
   }
 
   upload.click();

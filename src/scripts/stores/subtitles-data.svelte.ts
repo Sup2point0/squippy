@@ -135,7 +135,7 @@ export class SubtitlesData
     for (let [i, sub] of this.subs.entries())
     {
       let start: Timeframe = sub.start?.check() ?? last_timestamp;
-      let end:   Timeframe = sub.end_or_from(start, prefs.default_duration);
+      let end:   Timeframe = sub.end_or_from(start, prefs);
 
       let frags = [
         `${i+1}`,

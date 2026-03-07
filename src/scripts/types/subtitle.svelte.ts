@@ -1,4 +1,5 @@
 import { Timeframe, type Int } from "#scripts/types";
+import type { PrefsData } from "#scripts/stores";
 
 
 export class Subtitle
@@ -69,10 +70,16 @@ export class Subtitle
     }
   }
 
-  /** Get the specified ending timestamp of this subtitle if set. Otherwise calculate it from `start`, using the duration of this subtitle if set, otherwise using `default_duration`. */
-  end_or_from(start: Timeframe, default_duration: Timeframe): Timeframe
+  /** Get the specified ending timestamp of this subtitle if set. Otherwise calculate it from `start`, using the duration of this subtitle if set, otherwise using `prefs.default_duration`. */
+  end_or_from(start: Timeframe, prefs: PrefsData): Timeframe
   {
-    return this.end?.check() ?? start.shifted(this.duration?.check() ?? default_duration);
+    return (
+      this.end?.check()
+      ?? start.shifted(
+        this.duration?.check() ?? prefs.default_duration,
+        prefs.framerate
+      )
+    );
   }
 
 

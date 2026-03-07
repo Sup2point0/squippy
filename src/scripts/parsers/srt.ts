@@ -27,8 +27,6 @@ export function parse_srt(src: string, framerate: Int): Subtitle[]
 
   for (let line of src.split(/\r?\n/))
   {
-    // console.log(`i = ${i}; ctx = ${Ctx[ctx]}; code = ${line.charCodeAt(0)}; line = ${line}`);
-
     switch (ctx) {
       case Ctx.COUNT:
         if (parseInt(line) !== i) continue;

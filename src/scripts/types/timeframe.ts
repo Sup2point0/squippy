@@ -40,13 +40,25 @@ export class Timeframe
   }
 
   /** (out-of-place) Return this timeframe shifted by `duration` as a new `Timeframe`. */
-  shifted(duration: Timeframe): Timeframe
+  shifted(duration: Timeframe, framerate: Int): Timeframe
   {
-    return new Timeframe(
-      (this.mins ?? 0) + (duration.mins ?? 0),
-      (this.secs ?? 0) + (duration.secs ?? 0),
-      (this.frames ?? 0) + (duration.frames ?? 0),
-    );
+    let total_frames = (this.frames ?? 0) + (duration.frames ?? 0);
+    let frames = total_frames % framerate;
+    let carry_secs = Math.floor(total_frames / framerate);
+
+    let total_secs = (this.secs ?? 0) + (duration.secs ?? 0) + carry_secs;
+    let secs = total_secs % 60;
+    let carry_mins = Math.floor(total_secs / 60);
+
+    let mins = (this.mins ?? 0) + (duration.mins ?? 0) + carry_mins;
+
+    return new Timeframe(mins, secs, frames);
+  }
+
+  /** Find the duration between 2 timeframes. */
+  difference(start: Timeframe, end: Timeframe): Timeframe
+  {
+    
   }
 
   /** Render this timeframe in the format `mm:ss::ff`. */
