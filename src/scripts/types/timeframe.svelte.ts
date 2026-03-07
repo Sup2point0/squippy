@@ -39,13 +39,24 @@ export class Timeframe
     return this.is_valid() ? this : null
   }
 
+  /** Compare if 2 timeframes have identical components. */
+  static equal(left: Timeframe, right: Timeframe): boolean
+  {
+    return (
+      left.mins === right.mins
+      && left.secs === right.secs
+      && left.frames === right.secs
+    )
+  }
+
   /** Is this timestamp earlier than the given timestamp? */
   earlier_than(other: Timeframe): boolean
   {
     return (
       this.mins < other.mins
-      || this.secs < other.secs
-      || this.frames < other.frames  
+      || this.mins == other.mins && (this.secs < other.secs
+      || this.secs == other.secs && this.frames < other.frames
+      ) 
     );
   }
 
@@ -65,10 +76,31 @@ export class Timeframe
     return new Timeframe(mins, secs, frames);
   }
 
-  /** Find the duration between 2 timeframes. */
-  difference(start: Timeframe, end: Timeframe): Timeframe
+  /** Find the duration between 2 timeframes. Returns `null` if `end` is earlier than `start`, or if either timeframe has an unset component. */
+  static difference(start: Timeframe, end: Timeframe, framerate: Int): Timeframe | null
   {
-    
+    if (
+      end.earlier_than(start)
+      || start.mins === null || start.secs === null || start.frames === null
+      || end.mins === null || end.secs === null || end.frames === null
+    ) {
+      return null;
+    }
+
+    let mins = end.mins - start.mins;
+    let secs = end.secs - start.secs;
+    let frames = end.frames - start.frames;
+
+    if (frames < 0) {
+      secs--;
+      frames += framerate;
+    }
+    if (secs < 0) {
+      mins--;
+      secs += 60;
+    }
+
+    return new Timeframe(mins, secs, frames);
   }
 
   /** Render this timeframe in the format `mm:ss::ff`. */

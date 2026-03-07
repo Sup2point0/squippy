@@ -49,6 +49,7 @@ button {
   background: $col-prot;
   border: none;
   border-radius: $border-radius;
+  box-shadow: 0 2px 4px rgb(black, 25%);
 
   &:hover, &:focus-visible {
     cursor: pointer;

@@ -35,7 +35,6 @@ button.insert {
   width: calc(100% + 1.5rem);
   height: 1rem;
   position: absolute;
-  z-index: 2;
   top: 0;
   display: flex;
   flex-flow: row nowrap;

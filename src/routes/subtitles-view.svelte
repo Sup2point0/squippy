@@ -121,36 +121,44 @@ function clear_subtitles()
 </script>
 
 
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<main
-  bind:this={self}
-  {onmousemove}
-  {onmouseup}
->
-  <SubtitleGhost bind:dragging />
-  
-  {#each $subtitles.subs as sub, index (sub.id)}
-    <div animate:flip={{ duration: 500, easing: expoOut }}>
-      <Subtitle {index} bind:subtitle={$subtitles.subs[index]} />
-    </div>
-  {/each}
+<div class="container">
 
-  <AddSubtitle />
+  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+  <main
+    bind:this={self}
+    {onmousemove}
+    {onmouseup}
+  >
+    <SubtitleGhost bind:dragging />
+    
+    {#each $subtitles.subs as sub, index (sub.id)}
+      <div animate:flip={{ duration: 500, easing: expoOut }}>
+        <Subtitle {index} bind:subtitle={$subtitles.subs[index]} />
+      </div>
+    {/each}
+
+    <AddSubtitle />
+  </main>
 
   <div class="clickies">
     <Clicky text="Upload File" onclick={upload_file} />
     <Clicky text="Clear" onclick={clear_subtitles} />
   </div>
-</main>
+
+</div>
 
 
 <style lang="scss">
 
-main {
+.container {
   flex-grow: 1;
   min-width: 50vw;
-  padding: 1.5rem 1.5rem 4rem 1rem;
   position: relative;
+}
+
+main {
+  height: 100%;
+  padding: 1.5rem 1.5rem 4rem 1rem;
   display: flex;
   flex-flow: column nowrap;
   align-items: stretch;

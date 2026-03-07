@@ -84,7 +84,7 @@ const placeholder = flavour.sample_value();
 textarea {
   resize: vertical;
   flex-grow: 1;
-  height: 5.5em;
+  height: 6em;
   min-height: 5em;
   field-sizing: content;
   padding: 0.75em;
