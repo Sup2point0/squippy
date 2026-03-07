@@ -21,7 +21,8 @@ export interface DraggingData {
 
 <script lang="ts">
 
-import { subtitles } from "#scripts/stores";
+import { subtitles, prefs } from "#scripts/stores";
+import { parse_srt } from "#scripts/parsers";
 import { Subtitle as SubtitleData } from "#scripts/types";
 
 import Subtitle      from "#parts/subtitle.svelte";
@@ -51,6 +52,7 @@ setContext("dragging", dragging);
 
 
 let self: HTMLElement;
+let upload: HTMLElement;
 
 onMount(() => {
   dragging.root = self;
@@ -80,6 +82,36 @@ function onmouseup(e: MouseEvent)
   dragging.sub_id = null;
 }
 
+
+function upload_file()
+{
+  if (upload === undefined) {
+    upload = document.createElement("input");
+    upload.type = "file";
+    upload.accept = ".srt";
+
+    upload.addEventListener("change", process_file);
+  }
+
+  if ($subtitles.subs.length > 1) {
+    if (!window.confirm("Overwrite current work with content of uploaded file?")) return;
+  }
+
+  upload.click();
+}
+
+async function process_file(e)
+{
+  let files = e.target?.files;
+  if (!files?.length) return;
+
+  let file = files[0];
+  let src = await file.text();
+  let subs = parse_srt(src, $prefs.framerate);
+  console.log("subs =", $state.snapshot(subs));
+  $subtitles.subs = subs;
+}
+
 function clear_subtitles()
 {
   if (window.confirm("Delete all subtitles and timings? This will clear all work.")) {
@@ -107,6 +139,7 @@ function clear_subtitles()
   <AddSubtitle />
 
   <div class="clickies">
+    <Clicky text="Upload File" onclick={upload_file} />
     <Clicky text="Clear" onclick={clear_subtitles} />
   </div>
 </main>

@@ -1,6 +1,7 @@
 import { persisted } from "svelte-persisted-store";
 
 import { Timeframe, Subtitle, type Int } from "#scripts/types";
+import type { PrefsData } from "#scripts/stores";
 
 
 export class SubtitlesData
@@ -126,7 +127,7 @@ export class SubtitlesData
   }
 
   /** Export the subtitles to SRT format. */
-  export_raw(default_duration: Timeframe): string
+  export_raw(prefs: PrefsData): string
   {
     let lines = [];
     let last_timestamp = new Timeframe();
@@ -134,11 +135,11 @@ export class SubtitlesData
     for (let [i, sub] of this.subs.entries())
     {
       let start: Timeframe = sub.start?.check() ?? last_timestamp;
-      let end:   Timeframe = sub.end_or_from(start, default_duration);
+      let end:   Timeframe = sub.end_or_from(start, prefs.default_duration);
 
       let frags = [
         `${i+1}`,
-        `${start.display()} --> ${end.display()}`,
+        `${start.display(prefs.framerate)} --> ${end.display(prefs.framerate)}`,
         sub.body,
       ];
 

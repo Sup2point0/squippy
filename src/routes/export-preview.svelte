@@ -4,7 +4,7 @@ import { subtitles, prefs } from "#scripts/stores";
 import Clicky from "#parts/clicky.svelte";
 
 
-let exported = $derived($subtitles.export_raw($prefs.default_duration));
+let exported = $derived($subtitles.export_raw($prefs));
 
 function export_srt()
 {

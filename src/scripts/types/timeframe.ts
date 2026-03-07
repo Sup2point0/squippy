@@ -50,13 +50,15 @@ export class Timeframe
   }
 
   /** Render this timeframe in the format `mm:ss::ff`. */
-  display(): string
+  display(framerate: Int): string
   {
     let m = (this.mins ?? 0).toString().padStart(2, "0");
     let s = (this.secs ?? 0).toString().padStart(2, "0");
-    let f = (this.frames ?? 0).toString().padStart(2, "0");
 
-    return [m, s, f].join(":")
+    let f = Math.round(((this.frames ?? 0) / framerate) * 1000);
+    let ms = f.toString().padStart(3, "0");
+
+    return `00:${m}:${s},${ms}`;
   }
 
 

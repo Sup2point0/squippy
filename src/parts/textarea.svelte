@@ -16,6 +16,9 @@ interface Props {
 let { value = $bindable(), subtitle }: Props = $props();
 
 
+let invalid = $derived(value.includes("\n\n"));
+
+
 function onkeydown(e: KeyboardEvent)
 {
   if (e.ctrlKey || e.metaKey) {
@@ -63,9 +66,10 @@ const placeholder = flavour.sample_value();
 
 
 <textarea
+  class:invalid
   bind:value
   bind:this={subtitle._textarea}
-  title="Displayed text of subtitle"
+  title={invalid ? "Subtitle body cannot contain an empty line (disallowed in SRT subtitle format)" : "Displayed text of subtitle"}
   placeholder={$prefs.show_flavour && placeholder}
   {onkeydown}
 >
@@ -74,10 +78,14 @@ const placeholder = flavour.sample_value();
 
 <style lang="scss">
 
+@use 'sass:color';
+
+
 textarea {
   resize: vertical;
   flex-grow: 1;
   height: 5.5em;
+  min-height: 5em;
   field-sizing: content;
   padding: 0.75em;
   @include font-ui;
@@ -87,6 +95,12 @@ textarea {
   border: 1px solid $col-line;
   border-radius: $border-radius;
   transition: all 0.1s ease-out;
+
+  &.invalid {
+    color: $col-prot;
+    background: color.change($col-prot, $alpha: 0.08);
+    border-color: $col-prot;
+  }
   
   &::placeholder {
     color: $col-text-placeholder;
