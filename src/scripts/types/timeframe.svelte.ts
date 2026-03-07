@@ -4,9 +4,9 @@ import type { Int } from "#scripts/types";
 /** A measure of time in a subtitling context, consisting of minute, second and frame components. Can be used as both a single timestamp or duration to be used with other `Timeframe`s. */
 export class Timeframe
 {
-  mins:   Int | null;
-  secs:   Int | null;
-  frames: Int | null;
+  mins:   Int | null = $state(null);
+  secs:   Int | null = $state(null);
+  frames: Int | null = $state(null);
 
 
   constructor(mins?: Int | null, secs?: Int | null, frames?: Int | null)
@@ -37,6 +37,16 @@ export class Timeframe
   check(): Timeframe | null
   {
     return this.is_valid() ? this : null
+  }
+
+  /** Is this timestamp earlier than the given timestamp? */
+  earlier_than(other: Timeframe): boolean
+  {
+    return (
+      this.mins < other.mins
+      || this.secs < other.secs
+      || this.frames < other.frames  
+    );
   }
 
   /** (out-of-place) Return this timeframe shifted by `duration` as a new `Timeframe`. */
