@@ -7,6 +7,7 @@ interface Props {
   title: string;
   placeholder?: string;
   max?: number;
+  invalid?: boolean;
   disabled?: boolean;
 }
 
@@ -15,6 +16,7 @@ let {
   title,
   placeholder = "",
   max,
+  invalid = false,
   disabled,
 }: Props = $props();
 
@@ -23,6 +25,7 @@ let {
 
 <input
   type="number"
+  class:invalid
   bind:value
   {title}
   {placeholder}
@@ -48,7 +51,7 @@ input {
   border-radius: $border-radius;
   transition: all 0.1s ease-out;
 
-  &:invalid {
+  &:invalid, &.invalid {
     color: $col-prot;
     background: color.change($col-prot, $alpha: 0.08);
     border-color: $col-prot;
