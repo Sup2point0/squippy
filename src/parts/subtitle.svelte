@@ -138,22 +138,13 @@ function get(
     
     <!-- end -->
     <div class="timestamps">
-      <Input
-        title="minutes" placeholder="mm"
-        invalid={end_invalid}
-        disabled={subtitle.duration?.is_nonempty()}
+      <Input title="minutes" placeholder="mm" invalid={end_invalid}
         bind:value={get("end", "mins"), m => subtitle.set("end", { mins: m })}
       />
-      <Input
-        title="seconds" placeholder="ss" max={59}
-        invalid={end_invalid}
-        disabled={subtitle.duration?.is_nonempty()}
+      <Input title="seconds" placeholder="ss" invalid={end_invalid} max={59}
         bind:value={get("end", "secs"), s => subtitle.set("end", { secs: s })}
       />
-      <Input
-        title="frames" placeholder="ff" max={$prefs.framerate}
-        invalid={end_invalid}
-        disabled={subtitle.duration?.is_nonempty()}
+      <Input title="frames" placeholder="ff" invalid={end_invalid} max={$prefs.framerate}
         bind:value={get("end", "frames"), f => subtitle.set("end", { frames: f })}
       />
     </div>

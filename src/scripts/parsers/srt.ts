@@ -33,9 +33,9 @@ export function parse_srt(src: string, framerate: Int): Subtitle[]
         ctx = Ctx.TIMESTAMPS;
         
         data = {
-          start: null,
-          end: null,
-          duration: null,
+          start:    null as Timeframe | null,
+          end:      null as Timeframe | null,
+          duration: null as Timeframe | null,
           body: "",
         };
         break;
@@ -68,7 +68,8 @@ export function parse_srt(src: string, framerate: Int): Subtitle[]
             milli && Math.round(framerate * parseInt(milli) / 1000),
           );
         }
-        // TODO: Set duration
+        
+        data!.duration = Timeframe.difference(data!.start!, data!.end!, framerate);
 
         break;
 
