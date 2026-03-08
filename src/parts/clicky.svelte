@@ -50,9 +50,11 @@ button {
   border: none;
   border-radius: $border-radius;
   box-shadow: 0 2px 4px rgb(black, 25%);
+  transition: all 0.1s ease-out;
 
   &:hover, &:focus-visible {
     cursor: pointer;
+    box-shadow: 0 2px 6px rgb(black, 40%);
     filter: brightness(90%);
   }
 

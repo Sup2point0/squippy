@@ -169,6 +169,7 @@ main {
   position: absolute;
   bottom: 1.5rem;
   right: 1.5rem;
+  z-index: 4;
   display: flex;
   flex-flow: row wrap;
   gap: 0.5rem;

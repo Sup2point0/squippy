@@ -30,7 +30,7 @@ let { dragging = $bindable() }: Props = $props();
   pointer-events: none;
   width: 100%;
   position: absolute;
-  z-index: 20;
+  z-index: 2;
   top: 0;
   left: 0;
   background: light-dark(rgb(black, 8%), rgb(white, 8%));
