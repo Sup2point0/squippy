@@ -25,10 +25,10 @@ let { dragging = $bindable() }: Props = $props();
 
 <style lang="scss">
 
-
 .ghost {
   pointer-events: none;
-  width: 100%;
+  width: calc(100% - 3.5rem);
+  margin-left: 1rem;
   position: absolute;
   z-index: 2;
   top: 0;
